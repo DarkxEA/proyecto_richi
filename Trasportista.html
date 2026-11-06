@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HUERTO360 | Transportista</title>
+
+  <style>
+    :root {
+      font-family: Arial, sans-serif;
+      color: #173c30;
+      background: #f6f2e7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 230px;
+      flex: none;
+      background: #103c2f;
+      color: #fff;
+      padding: 24px 14px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 0 10px 28px;
+    }
+
+    .logo small {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .nav {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 5px;
+      text-align: left;
+      color: white;
+      background: none;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+    }
+
+    .nav:hover,
+    .nav.active {
+      background: #ebca69;
+      color: #173c30;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 28px;
+    }
+
+    header,
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    header {
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin: 4px 0;
+    }
+
+    h2 {
+      font-size: 19px;
+      margin: 0 0 13px;
+    }
+
+    p,
+    .muted {
+      color: #667a6d;
+    }
+
+    .eyebrow {
+      color: #238063;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card,
+    .stat {
+      padding: 20px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #153b2912;
+    }
+
+    .card {
+      margin-bottom: 18px;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #65776b;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 9px;
+      font-size: 25px;
+    }
+
+    .entry {
+      padding: 15px 0;
+      border-bottom: 1px solid #e9eee9;
+    }
+
+    .entry:last-child {
+      border: 0;
+    }
+
+    .entry .row {
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: #fff0ce;
+      color: #70510e;
+    }
+
+    .badge.route {
+      background: #e1edf9;
+      color: #275984;
+    }
+
+    .badge.done {
+      background: #dcefe1;
+      color: #145b3f;
+    }
+
+    .badge.fail {
+      background: #fae3e0;
+      color: #913d36;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: #147357;
+      cursor: pointer;
+    }
+
+    .btn.alt {
+      color: #15523d;
+      background: #e6f2e8;
+    }
+
+    .btn.red {
+      background: #a84941;
+    }
+
+    .btn:hover {
+      filter: brightness(.93);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d6e0d8;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 12px 0 6px;
+    }
+
+    .empty {
+      padding: 15px;
+      background: #f4f7f2;
+      border-radius: 8px;
+    }
+
+    .search {
+      max-width: 270px;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: block;
+      }
+
+      aside {
+        display: flex;
+        width: 100%;
+        padding: 10px;
+        overflow-x: auto;
+      }
+
+      .logo {
+        font-size: 16px;
+        white-space: nowrap;
+        margin: 10px 15px 0 4px;
+      }
+
+      .logo small {
+        display: none;
+      }
+
+      .nav {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      header {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside>
+      <div class="logo">
+        🌻 HUERTO360
+        <small>Panel del transportista</small>
+      </div>
+
+      <nav id="menu"></nav>
+    </aside>
+
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">LOGÍSTICA Y ENTREGAS</p>
+          <h1 id="title">Resumen</h1>
+        </div>
+
+        <strong>🚚 Transportista</strong>
+      </header>
+
+      <div id="content"></div>
+    </main>
+  </div>
+
+  <script src="js/huerto360-api.js"></script>
+  <script>
+    const api = (accion, datos) =>
+      apiLlamar("api/transportista.php", accion, datos);
+
+    const today = () => {
+      const d = new Date();
+
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    };
+
+    let db = { deliveries: [], incidents: [] };
+
+    let page = "Resumen";
+    let filter = "";
+
+    const $ = id => document.getElementById(id);
+
+    // Envía la acción al servidor y vuelve a pintar con los datos que devuelve la base
+    async function guardar(accion, datos) {
+      try {
+        db = (await api(accion, datos)).datos;
+        render();
+        return true;
+      } catch (error) {
+        alert(error.message);
+        return false;
+      }
+    }
+
+    const esc = value =>
+      String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[ch]);
+
+    const fmtDate = value =>
+      new Date(value + "T12:00:00").toLocaleDateString("es-MX", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+
+    const fmtTime = value =>
+      value
+        ? new Date(value).toLocaleString("es-MX", {
+            day: "numeric",
+            month: "short",
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+        : "—";
+
+    const matches = item =>
+      `${item.client} ${item.address} ${item.crop}`
+        .toLocaleLowerCase()
+        .includes(filter.toLocaleLowerCase());
+
+    function deliveryCard(item) {
+      const badge =
+        item.status === "Entregada"
+          ? "done"
+          : item.status === "En ruta"
+            ? "route"
+            : item.status === "No entregada"
+              ? "fail"
+              : "";
+
+      return `
+        <article class="entry">
+          <div class="row">
+            <strong>
+              Pedido #${item.id} · ${esc(item.client)}
+            </strong>
+
+            <span class="badge ${badge}">
+              ${item.status}
+            </span>
+          </div>
+
+          <p>
+            📍 ${esc(item.address)}<br>
+            📦 ${esc(item.crop)} · ${item.amount} kg<br>
+            📅 ${fmtDate(item.date)}
+          </p>
+
+          ${
+            item.note
+              ? `<p class="muted">
+                   Observación: ${esc(item.note)}
+                 </p>`
+              : ""
+          }
+
+          ${
+            item.deliveredAt
+              ? `<p class="muted">
+                   Actualizado: ${fmtTime(item.deliveredAt)}
+                 </p>`
+              : ""
+          }
+
+          <div class="actions">
+            ${
+              item.status === "Pendiente"
+                ? `<button
+                     class="btn alt"
+                     data-action="start"
+                     data-id="${item.id}"
+                   >
+                     Iniciar ruta
+                   </button>`
+                : ""
+            }
+
+            ${
+              item.status === "En ruta"
+                ? `<button
+                     class="btn"
+                     data-action="deliver"
+                     data-id="${item.id}"
+                   >
+                     Confirmar entrega
+                   </button>
+
+                   <button
+                     class="btn red"
+                     data-action="fail"
+                     data-id="${item.id}"
+                   >
+                     No entregada
+                   </button>`
+                : ""
+            }
+
+            <button
+              class="btn alt"
+              data-action="map"
+              data-id="${item.id}"
+            >
+              Ver ubicación
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function render() {
+      const pages = [
+        "Resumen",
+        "Mis entregas",
+        "Incidencias",
+        "Historial"
+      ];
+
+      $("menu").innerHTML = pages.map((name, i) => `
+        <button
+          class="nav ${name === page ? "active" : ""}"
+          data-page="${name}"
+        >
+          ${["⌂", "🚚", "⚠", "▤"][i]} ${name}
+        </button>
+      `).join("");
+
+      $("title").textContent = page;
+
+      const pending = db.deliveries.filter(
+        x => x.status === "Pendiente"
+      ).length;
+
+      const route = db.deliveries.filter(
+        x => x.status === "En ruta"
+      ).length;
+
+      const done = db.deliveries.filter(
+        x => x.status === "Entregada"
+      ).length;
+
+      let html = "";
+
+      if (page === "Resumen") {
+        html = `
+          <p>
+            Estas son tus entregas programadas para hoy,
+            ${fmtDate(today())}.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <span>Asignadas</span>
+              <strong>${db.deliveries.length}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Pendientes</span>
+              <strong>${pending}</strong>
+            </div>
+
+            <div class="stat">
+              <span>En ruta</span>
+              <strong>${route}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Entregadas</span>
+              <strong>${done}</strong>
+            </div>
+          </div>
+
+          <div class="grid">
+            <section class="card">
+              <h2>Próximas entregas</h2>
+
+              ${
+                db.deliveries
+                  .filter(
+                    x =>
+                      x.status === "Pendiente" ||
+                      x.status === "En ruta"
+                  )
+                  .slice(0, 3)
+                  .map(deliveryCard)
+                  .join("") ||
+                `<p class="empty">
+                   No tienes entregas pendientes.
+                 </p>`
+              }
+            </section>
+
+            <section class="card">
+              <h2>Resumen de carga</h2>
+
+              <p>
+                Mercancía asignada:
+                <b>
+                  ${db.deliveries
+                    .filter(
+                      x =>
+                        x.status === "Pendiente" ||
+                        x.status === "En ruta"
+                    )
+                    .reduce((sum, x) => sum + x.amount, 0)} kg
+                </b>
+              </p>
+
+              <p>
+                Incidencias registradas:
+                <b>${db.incidents.length}</b>
+              </p>
+
+              <button class="btn" data-action="goDeliveries">
+                Ver todas las entregas
+              </button>
+            </section>
+          </div>
+        `;
+      }
+
+      if (page === "Mis entregas") {
+        html = `
+          <div class="card">
+            <div class="row">
+              <h2>Entregas asignadas</h2>
+
+              <input
+                class="search"
+                id="search"
+                placeholder="Buscar cliente o cultivo"
+                value="${esc(filter)}"
+                aria-label="Buscar entregas"
+              >
+            </div>
+
+            <div id="deliveryList">
+              ${
+                db.deliveries
+                  .filter(matches)
+                  .filter(
+                    x =>
+                      x.status !== "Entregada" &&
+                      x.status !== "No entregada"
+                  )
+                  .map(deliveryCard)
+                  .join("") ||
+                `<p class="empty">
+                   No hay entregas que coincidan.
+                 </p>`
+              }
+            </div>
+          </div>
+        `;
+      }
+
+      if (page === "Incidencias") {
+        html = `
+          <div class="grid">
+            <section class="card">
+              <h2>Reportar incidencia</h2>
+
+              <form id="incidentForm">
+                <label for="order">Pedido</label>
+
+                <select id="order" name="order" required>
+                  ${db.deliveries.map(x => `
+                    <option value="${x.id}">
+                      #${x.id} · ${esc(x.client)}
+                    </option>
+                  `).join("")}
+                </select>
+
+                <label for="type">Tipo</label>
+
+                <select id="type" name="type">
+                  <option>Retraso</option>
+                  <option>Vehículo</option>
+                  <option>Producto dañado</option>
+                  <option>Dirección incorrecta</option>
+                  <option>Otro</option>
+                </select>
+
+                <label for="details">Descripción</label>
+
+                <textarea
+                  id="details"
+                  name="details"
+                  required
+                  maxlength="400"
+                  placeholder="Describe lo ocurrido"
+                ></textarea>
+
+                <p>
+                  <button class="btn">
+                    Guardar incidencia
+                  </button>
+                </p>
+              </form>
+            </section>
+
+            <section class="card">
+              <h2>Reportes realizados</h2>
+
+              ${
+                [...db.incidents]
+                  .reverse()
+                  .map(x => `
+                    <div class="entry">
+                      <strong>
+                        #${x.order} · ${esc(x.type)}
+                      </strong>
+
+                      <p>${esc(x.details)}</p>
+
+                      <span class="muted">
+                        ${fmtTime(x.createdAt)}
+                      </span>
+                    </div>
+                  `)
+                  .join("") ||
+                `<p class="empty">
+                   Todavía no hay incidencias.
+                 </p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (page === "Historial") {
+        html = `
+          <div class="card">
+            <h2>Entregas finalizadas</h2>
+
+            ${
+              db.deliveries
+                .filter(
+                  x =>
+                    x.status === "Entregada" ||
+                    x.status === "No entregada"
+                )
+                .map(deliveryCard)
+                .join("") ||
+              `<p class="empty">
+                 Aún no hay entregas finalizadas.
+               </p>`
+            }
+          </div>
+        `;
+      }
+
+      $("content").innerHTML = html;
+    }
+
+    document.addEventListener("click", event => {
+      const button = event.target.closest(
+        "[data-page],[data-action]"
+      );
+
+      if (!button) return;
+
+      if (button.dataset.page) {
+        page = button.dataset.page;
+        filter = "";
+        render();
+        return;
+      }
+
+      const action = button.dataset.action;
+
+      if (action === "goDeliveries") {
+        page = "Mis entregas";
+        render();
+        return;
+      }
+
+      const item = db.deliveries.find(
+        x => x.id === Number(button.dataset.id)
+      );
+
+      if (!item) return;
+
+      if (action === "map") {
+        window.open(
+          "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(item.address),
+          "_blank",
+          "noopener,noreferrer"
+        );
+        return;
+      }
+
+      if (action === "start" && item.status === "Pendiente") {
+        guardar("iniciar", { id: item.id });
+      }
+
+      if (action === "deliver" && item.status === "En ruta") {
+        if (!confirm("¿Confirmas que entregaste este pedido?")) {
+          return;
+        }
+
+        guardar("entregar", { id: item.id });
+      }
+
+      if (action === "fail" && item.status === "En ruta") {
+        const note = prompt(
+          "Escribe por qué no se pudo entregar:"
+        );
+
+        if (note === null) return;
+
+        if (!note.trim()) {
+          alert("Debes escribir el motivo.");
+          return;
+        }
+
+        guardar("fallar", { id: item.id, note: note.trim() });
+      }
+    });
+
+    document.addEventListener("input", event => {
+      if (event.target.id !== "search") return;
+
+      filter = event.target.value;
+
+      $("deliveryList").innerHTML =
+        db.deliveries
+          .filter(matches)
+          .filter(
+            x =>
+              x.status !== "Entregada" &&
+              x.status !== "No entregada"
+          )
+          .map(deliveryCard)
+          .join("") ||
+        `<p class="empty">
+           No hay entregas que coincidan.
+         </p>`;
+    });
+
+    document.addEventListener("submit", event => {
+      if (event.target.id !== "incidentForm") return;
+
+      event.preventDefault();
+
+      const values = Object.fromEntries(
+        new FormData(event.target)
+      );
+
+      if (!values.details.trim()) return;
+
+      guardar("incidencia", {
+        order: Number(values.order),
+        type: values.type,
+        details: values.details.trim()
+      });
+    });
+
+    agregarBotonSalir();
+
+    (async () => {
+      try {
+        db = (await api("cargar")).datos;
+      } catch (error) {
+        alert(error.message);
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>

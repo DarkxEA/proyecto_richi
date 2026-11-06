@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HUERTO360 | Panel del jornalero</title>
+
+  <style>
+    :root {
+      font-family: Arial, sans-serif;
+      color: #163c30;
+      background: #f5f1e6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 230px;
+      flex: none;
+      padding: 25px 15px;
+      background: #103c2f;
+      color: white;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 0 10px 28px;
+    }
+
+    .logo small {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .nav {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 5px;
+      border: 0;
+      border-radius: 9px;
+      text-align: left;
+      color: white;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav.active,
+    .nav:hover {
+      background: #ebca69;
+      color: #173e32;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1200px;
+      padding: 28px;
+      margin: 0 auto;
+    }
+
+    header,
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    header {
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      margin: 4px 0;
+      font-size: 28px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 19px;
+    }
+
+    p,
+    .muted {
+      color: #64776c;
+    }
+
+    .eyebrow {
+      margin: 0;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #308067;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .card,
+    .stat {
+      padding: 20px;
+      border-radius: 14px;
+      background: white;
+      box-shadow: 0 4px 18px #153b2912;
+    }
+
+    .card {
+      margin-bottom: 18px;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #63766a;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 25px;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: #147357;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      filter: brightness(.92);
+    }
+
+    .btn.alt {
+      color: #15513d;
+      background: #e6f2e8;
+    }
+
+    .btn.red {
+      background: #aa4941;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .entry {
+      padding: 14px 0;
+      border-bottom: 1px solid #e8eee8;
+    }
+
+    .entry:last-child {
+      border-bottom: 0;
+    }
+
+    .entry .row {
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      background: #fff0c8;
+      color: #745409;
+    }
+
+    .badge.done {
+      color: #13563b;
+      background: #d9efe0;
+    }
+
+    .badge.progress {
+      color: #2d5a84;
+      background: #e0edfa;
+    }
+
+    .form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 13px 0;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d4dfd6;
+      border-radius: 8px;
+      font: inherit;
+    }
+
+    .form input,
+    .form select {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .form .btn {
+      flex: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .empty {
+      padding: 15px;
+      border-radius: 8px;
+      background: #f5f8f3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .notice {
+      margin: 14px 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: #fff2d7;
+    }
+
+    @media (max-width: 760px) {
+      .layout {
+        display: block;
+      }
+
+      aside {
+        display: flex;
+        width: 100%;
+        padding: 10px;
+        overflow-x: auto;
+      }
+
+      .logo {
+        white-space: nowrap;
+        margin: 10px 16px 0 4px;
+        font-size: 16px;
+      }
+
+      .logo small {
+        display: none;
+      }
+
+      .nav {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside>
+      <div class="logo">
+        🌻 HUERTO360
+        <small>Panel del jornalero</small>
+      </div>
+
+      <nav id="menu"></nav>
+    </aside>
+
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">GESTIÓN DE CAMPO</p>
+          <h1 id="title">Mi jornada</h1>
+        </div>
+
+        <strong>👨🏽‍🌾 Jornalero</strong>
+      </header>
+
+      <div id="content"></div>
+    </main>
+  </div>
+
+  <script src="js/huerto360-api.js"></script>
+  <script>
+    const api = (accion, datos) =>
+      apiLlamar("api/jornalero.php", accion, datos);
+
+    const localDate = () => {
+      const d = new Date();
+
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    };
+
+    let data = { shift: null, tasks: [], harvests: [], reports: [] };
+
+    let section = "Mi jornada";
+
+    const $ = id => document.getElementById(id);
+
+    // Envía la acción al servidor y vuelve a pintar con los datos que devuelve la base
+    async function guardar(accion, datos) {
+      try {
+        data = (await api(accion, datos)).datos;
+        render();
+        return true;
+      } catch (error) {
+        alert(error.message);
+        return false;
+      }
+    }
+
+    const escapeHTML = value =>
+      String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+
+    const dateText = value =>
+      new Date(value + "T12:00:00").toLocaleDateString("es-MX", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      });
+
+    const timeText = value =>
+      value
+        ? new Date(value).toLocaleTimeString("es-MX", {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+        : "—";
+
+    const count = status =>
+      data.tasks.filter(task => task.status === status).length;
+
+    function taskCard(task) {
+      const cls =
+        task.status === "Completada"
+          ? "done"
+          : task.status === "En proceso"
+            ? "progress"
+            : "";
+
+      return `
+        <div class="entry">
+          <div class="row">
+            <strong>${escapeHTML(task.name)}</strong>
+            <span class="badge ${cls}">${task.status}</span>
+          </div>
+
+          <p class="muted">
+            📍 ${escapeHTML(task.zone)} · 📅 ${dateText(task.date)}
+          </p>
+
+          <div class="form">
+            ${
+              task.status === "Pendiente"
+                ? `<button class="btn alt" data-action="startTask" data-id="${task.id}">
+                     Iniciar
+                   </button>`
+                : ""
+            }
+
+            ${
+              task.status !== "Completada"
+                ? `<button class="btn" data-action="finishTask" data-id="${task.id}">
+                     Completar
+                   </button>`
+                : ""
+            }
+          </div>
+        </div>
+      `;
+    }
+
+    function render() {
+      const pages = [
+        "Mi jornada",
+        "Mis tareas",
+        "Registrar cosecha",
+        "Reportar incidencia",
+        "Historial"
+      ];
+
+      $("menu").innerHTML = pages.map((name, index) => `
+        <button
+          class="nav ${name === section ? "active" : ""}"
+          data-page="${name}"
+        >
+          ${["⌂", "☑", "🌽", "⚠", "▤"][index]} ${name}
+        </button>
+      `).join("");
+
+      $("title").textContent = section;
+
+      const todayTasks = data.tasks.filter(
+        task => task.date === localDate()
+      );
+
+      const shift = data.shift;
+      let html = "";
+
+      if (section === "Mi jornada") {
+        html = `
+          <p>Estas son tus actividades del ${dateText(localDate())}.</p>
+
+          <div class="stats">
+            <div class="stat">
+              <span>Tareas de hoy</span>
+              <strong>${todayTasks.length}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Pendientes</span>
+              <strong>${count("Pendiente")}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Completadas</span>
+              <strong>${count("Completada")}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Cosechas registradas</span>
+              <strong>${data.harvests.length}</strong>
+            </div>
+          </div>
+
+          <div class="grid">
+            <section class="card">
+              <h2>Control de jornada</h2>
+
+              <p>
+                Entrada: <b>${timeText(shift?.start)}</b> ·
+                Salida: <b>${timeText(shift?.end)}</b>
+              </p>
+
+              ${
+                !shift || shift.date !== localDate()
+                  ? `<button class="btn" data-action="checkIn">
+                       Registrar entrada
+                     </button>`
+                  : !shift.end
+                    ? `<button class="btn red" data-action="checkOut">
+                         Registrar salida
+                       </button>`
+                    : `<span class="badge done">
+                         Jornada finalizada
+                       </span>`
+              }
+            </section>
+
+            <section class="card">
+              <h2>Resumen de tareas</h2>
+
+              ${
+                todayTasks.length
+                  ? todayTasks.map(taskCard).join("")
+                  : `<p class="empty">No hay tareas para hoy.</p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (section === "Mis tareas") {
+        html = `
+          <div class="card">
+            <h2>Tareas asignadas</h2>
+
+            ${
+              data.tasks.length
+                ? [...data.tasks]
+                    .sort((a, b) => a.date.localeCompare(b.date))
+                    .map(taskCard)
+                    .join("")
+                : `<p class="empty">No hay tareas asignadas.</p>`
+            }
+          </div>
+        `;
+      }
+
+      if (section === "Registrar cosecha") {
+        html = `
+          <div class="grid">
+            <section class="card">
+              <h2>Nueva cosecha</h2>
+
+              <form id="harvestForm">
+                <label for="crop">Cultivo</label>
+                <input
+                  id="crop"
+                  name="crop"
+                  required
+                  maxlength="50"
+                  placeholder="Ej. Lechuga"
+                >
+
+                <label for="zone">Zona</label>
+                <select id="zone" name="zone" required>
+                  <option>Invernadero</option>
+                  <option>Exterior</option>
+                  <option>Huerto norte</option>
+                </select>
+
+                <label for="amount">Cantidad (kg)</label>
+                <input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  required
+                >
+
+                <label for="harvestDate">Fecha</label>
+                <input
+                  id="harvestDate"
+                  name="date"
+                  type="date"
+                  value="${localDate()}"
+                  required
+                >
+
+                <p>
+                  <button class="btn">Guardar cosecha</button>
+                </p>
+              </form>
+            </section>
+
+            <section class="card">
+              <h2>Cosechas registradas</h2>
+
+              ${
+                data.harvests.length
+                  ? [...data.harvests].reverse().map(item => `
+                      <div class="entry">
+                        <div class="row">
+                          <strong>${escapeHTML(item.crop)}</strong>
+                          <span class="badge done">${item.amount} kg</span>
+                        </div>
+
+                        <p class="muted">
+                          ${escapeHTML(item.zone)} · ${dateText(item.date)}
+                        </p>
+                      </div>
+                    `).join("")
+                  : `<p class="empty">
+                       Aún no hay cosechas registradas.
+                     </p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (section === "Reportar incidencia") {
+        html = `
+          <div class="grid">
+            <section class="card">
+              <h2>Nueva incidencia</h2>
+
+              <form id="reportForm">
+                <label for="reportType">Tipo</label>
+                <select id="reportType" name="type" required>
+                  <option>Plaga</option>
+                  <option>Falta de agua</option>
+                  <option>Herramienta dañada</option>
+                  <option>Otro</option>
+                </select>
+
+                <label for="reportZone">Zona</label>
+                <select id="reportZone" name="zone" required>
+                  <option>Invernadero</option>
+                  <option>Exterior</option>
+                  <option>Huerto norte</option>
+                </select>
+
+                <label for="description">Descripción</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  required
+                  maxlength="400"
+                  placeholder="Describe lo que encontraste"
+                ></textarea>
+
+                <p>
+                  <button class="btn">Guardar reporte</button>
+                </p>
+              </form>
+            </section>
+
+            <section class="card">
+              <h2>Mis reportes</h2>
+
+              ${
+                data.reports.length
+                  ? [...data.reports].reverse().map(item => `
+                      <div class="entry">
+                        <div class="row">
+                          <strong>${escapeHTML(item.type)}</strong>
+                          <span class="badge">Registrada</span>
+                        </div>
+
+                        <p>${escapeHTML(item.description)}</p>
+
+                        <p class="muted">
+                          ${escapeHTML(item.zone)} · ${dateText(item.date)}
+                        </p>
+                      </div>
+                    `).join("")
+                  : `<p class="empty">
+                       No has registrado incidencias.
+                     </p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (section === "Historial") {
+        html = `
+          <div class="stats">
+            <div class="stat">
+              <span>Tareas completadas</span>
+              <strong>${count("Completada")}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Cosecha total</span>
+              <strong>
+                ${data.harvests.reduce(
+                  (sum, item) => sum + item.amount, 0
+                ).toFixed(2)} kg
+              </strong>
+            </div>
+
+            <div class="stat">
+              <span>Incidencias</span>
+              <strong>${data.reports.length}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Jornada</span>
+              <strong>
+                ${
+                  shift?.end
+                    ? "Terminada"
+                    : shift?.date === localDate()
+                      ? "Activa"
+                      : "Sin iniciar"
+                }
+              </strong>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Actividades realizadas</h2>
+
+            ${
+              data.tasks
+                .filter(task => task.status === "Completada")
+                .map(taskCard)
+                .join("") ||
+              `<p class="empty">
+                 Aún no hay tareas completadas.
+               </p>`
+            }
+          </div>
+        `;
+      }
+
+      $("content").innerHTML = html;
+    }
+
+    document.addEventListener("click", event => {
+      const button = event.target.closest(
+        "[data-page], [data-action]"
+      );
+
+      if (!button) return;
+
+      if (button.dataset.page) {
+        section = button.dataset.page;
+        render();
+        return;
+      }
+
+      const action = button.dataset.action;
+
+      const task = data.tasks.find(
+        item => item.id === Number(button.dataset.id)
+      );
+
+      if (action === "checkIn") {
+        guardar("entrada");
+      }
+
+      if (action === "checkOut") {
+        guardar("salida");
+      }
+
+      if (action === "startTask" && task) {
+        guardar("iniciar_tarea", { id: task.id });
+      }
+
+      if (action === "finishTask" && task) {
+        guardar("completar_tarea", { id: task.id });
+      }
+    });
+
+    document.addEventListener("submit", event => {
+      if (
+        !["harvestForm", "reportForm"].includes(event.target.id)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const values = Object.fromEntries(
+        new FormData(event.target)
+      );
+
+      if (event.target.id === "harvestForm") {
+        const amount = Number(values.amount);
+
+        if (!Number.isFinite(amount) || amount <= 0) return;
+
+        guardar("guardar_cosecha", {
+          crop: values.crop.trim(),
+          zone: values.zone,
+          amount: amount,
+          date: values.date
+        });
+      } else {
+        guardar("reportar", {
+          type: values.type,
+          zone: values.zone,
+          description: values.description.trim()
+        });
+      }
+    });
+
+    agregarBotonSalir();
+
+    (async () => {
+      try {
+        data = (await api("cargar")).datos;
+      } catch (error) {
+        alert(error.message);
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>

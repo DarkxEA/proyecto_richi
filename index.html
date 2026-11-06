@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huerto360 | Iniciar sesión y Registro</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --verde: #1f6b43;
+      --verde-oscuro: #174d32;
+      --verde-claro: #e9f4e9;
+      --lima: #b9d96b;
+      --texto: #20352a;
+      --gris: #718076;
+      --borde: #e2e9e2;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f3f7f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      color: var(--texto);
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 1000px;
+      min-height: 610px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(31, 73, 45, .13);
+    }
+
+    /* Lado de bienvenida */
+
+    .bienvenida {
+      padding: 42px;
+      background: linear-gradient(145deg, var(--verde), var(--verde-oscuro));
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bienvenida::after {
+      content: "";
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 50%;
+      right: -160px;
+      top: 150px;
+      box-shadow: 0 0 0 45px rgba(255,255,255,.04);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-icono {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--lima);
+      color: var(--verde-oscuro);
+      border-radius: 14px;
+      font-size: 27px;
+      font-weight: bold;
+    }
+
+    .logo-texto {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .logo-texto span {
+      color: var(--lima);
+    }
+
+    .contenido-bienvenida {
+      max-width: 390px;
+      margin: 45px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .etiqueta {
+      display: inline-block;
+      padding: 8px 13px;
+      border-radius: 30px;
+      background: rgba(255,255,255,.12);
+      color: #e2f2d2;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .contenido-bienvenida h1 {
+      font-size: 43px;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin: 22px 0 16px;
+    }
+
+    .contenido-bienvenida p {
+      color: #d3e4d7;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .beneficios {
+      display: grid;
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .beneficio {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 14px;
+    }
+
+    .check {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: rgba(185,217,107,.2);
+      color: var(--lima);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .pie-bienvenida {
+      font-size: 12px;
+      color: #bdd4c3;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Formulario de acceso y registro */
+
+    .formulario-lado {
+      padding: 38px clamp(24px, 4.5vw, 55px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-height: 94vh;
+      overflow-y: auto;
+    }
+
+    .formulario-lado::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .formulario-lado::-webkit-scrollbar-thumb {
+      background: #d5e0d6;
+      border-radius: 4px;
+    }
+
+    .vista-formulario {
+      animation: aparecer .25s ease-out;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-movil {
+      display: none;
+    }
+
+    .encabezado {
+      margin-bottom: 24px;
+    }
+
+    .encabezado h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      letter-spacing: -.7px;
+    }
+
+    .encabezado p {
+      color: var(--gris);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .campo {
+      margin-bottom: 18px;
+    }
+
+    .campo.campo-registro {
+      margin-bottom: 13px;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .entrada {
+      position: relative;
+    }
+
+    .entrada input,
+    .entrada select {
+      width: 100%;
+      height: 48px;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 0 45px;
+      outline: none;
+      font-size: 14px;
+      background: #fbfcfa;
+      color: var(--texto);
+      transition: .2s;
+    }
+
+    .entrada select {
+      padding: 0 40px 0 45px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+    }
+
+    .entrada input:focus,
+    .entrada select:focus {
+      border-color: #5a9a70;
+      box-shadow: 0 0 0 4px rgba(69,142,88,.12);
+      background: white;
+    }
+
+    .entrada input::placeholder {
+      color: #a1ada3;
+    }
+
+    .icono-campo {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #819185;
+      pointer-events: none;
+      font-size: 14px;
+    }
+
+    .flecha-select {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #819185;
+      font-size: 11px;
+    }
+
+    .ver-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--verde);
+      font-weight: bold;
+      cursor: pointer;
+      padding: 6px;
+      font-size: 12px;
+    }
+
+    .opciones {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 2px 0 20px;
+      font-size: 12px;
+    }
+
+    .recordarme {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--gris);
+      cursor: pointer;
+    }
+
+    .recordarme input {
+      accent-color: var(--verde);
+      cursor: pointer;
+    }
+
+    a {
+      color: var(--verde);
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .boton-login {
+      width: 100%;
+      height: 50px;
+      border: none;
+      border-radius: 12px;
+      background: var(--verde);
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(31,107,67,.18);
+      transition: .2s;
+    }
+
+    .boton-login:hover {
+      background: var(--verde-oscuro);
+      transform: translateY(-1px);
+    }
+
+    .mensaje {
+      display: none;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .mensaje.error {
+      display: block;
+      background: #fff0ef;
+      color: #9c3030;
+      border: 1px solid #f5d3d0;
+    }
+
+    .mensaje.info {
+      display: block;
+      background: #eef7ee;
+      color: #285e3b;
+      border: 1px solid #d4e9d5;
+    }
+
+    .mensaje.success {
+      display: block;
+      background: #eaf6ec;
+      color: #175432;
+      border: 1px solid #bce3c4;
+      font-weight: 600;
+    }
+
+    .separador {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin: 22px 0;
+      color: #9aa69c;
+      font-size: 11px;
+    }
+
+    .separador::before,
+    .separador::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--borde);
+    }
+
+    .registro {
+      text-align: center;
+      color: var(--gris);
+      font-size: 13px;
+    }
+
+    .legal {
+      text-align: center;
+      margin-top: 24px;
+      color: #9aa69c;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    /* Adaptación para celulares */
+
+    @media (max-width: 760px) {
+      body {
+        padding: 14px;
+      }
+
+      .contenedor {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+        min-height: auto;
+        border-radius: 22px;
+      }
+
+      .bienvenida {
+        display: none;
+      }
+
+      .formulario-lado {
+        padding: 28px 20px;
+        max-height: none;
+      }
+
+      .logo-movil {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+      }
+
+      .logo-movil .logo-icono {
+        width: 43px;
+        height: 43px;
+      }
+
+      .logo-movil .logo-texto {
+        color: var(--verde-oscuro);
+        font-size: 21px;
+      }
+
+      .encabezado h2 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="contenedor">
+
+    <!-- Lado Izquierdo: Bienvenida e información -->
+    <section class="bienvenida">
+      <div class="logo">
+        <div class="logo-icono">H</div>
+        <div class="logo-texto">Huerto<span>360</span></div>
+      </div>
+
+      <div class="contenido-bienvenida">
+        <span class="etiqueta">Del campo a tus manos</span>
+
+        <h1>Todo tu campo, en un solo lugar.</h1>
+
+        <p>
+          Conecta con tu comunidad agrícola y mantén tus actividades
+          organizadas desde una plataforma sencilla.
+        </p>
+
+        <div class="beneficios">
+          <div class="beneficio">
+            <span class="check">✓</span>
+            Gestiona tus actividades fácilmente
+          </div>
+
+          <div class="beneficio">
+            <span class="check">✓</span>
+            Conecta productores y clientes
+          </div>
+
+          <div class="beneficio">
+            <span class="check">✓</span>
+            Da seguimiento a cada entrega
+          </div>
+        </div>
+      </div>
+
+      <div class="pie-bienvenida">
+        © 2026 Huerto360 | Cultivando conexiones
+      </div>
+    </section>
+
+    <!-- Lado Derecho: Formularios -->
+    <section class="formulario-lado">
+
+      <div class="logo-movil">
+        <div class="logo-icono">H</div>
+        <div class="logo-texto">
+          Huerto<span style="color:#8cb94f">360</span>
+        </div>
+      </div>
+
+      <!-- VISTA: INICIAR SESIÓN -->
+      <div id="vistaLogin" class="vista-formulario">
+        <div class="encabezado">
+          <h2>¡Qué gusto verte!</h2>
+          <p>
+            Ingresa tus datos para acceder a tu cuenta de Huerto360.
+          </p>
+        </div>
+
+        <form id="loginForm" novalidate>
+
+          <div class="campo">
+            <label for="correo">Correo electrónico</label>
+
+            <div class="entrada">
+              <span class="icono-campo">✉</span>
+              <input
+                type="email"
+                id="correo"
+                name="correo"
+                placeholder="tucorreo@ejemplo.com"
+                autocomplete="username"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="contrasena">Contraseña</label>
+
+            <div class="entrada">
+              <span class="icono-campo">▣</span>
+
+              <input
+                type="password"
+                id="contrasena"
+                name="contrasena"
+                placeholder="Escribe tu contraseña"
+                autocomplete="current-password"
+                required
+              >
+
+              <button
+                type="button"
+                class="ver-password"
+                id="verPassword"
+              >
+                Ver
+              </button>
+            </div>
+          </div>
+
+          <div class="opciones">
+            <label class="recordarme">
+              <input type="checkbox" id="recordarme">
+              Recordarme
+            </label>
+
+            <a href="#" id="recuperar">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <div
+            id="mensaje"
+            class="mensaje"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <button type="submit" class="boton-login">
+            Iniciar sesión →
+          </button>
+
+        </form>
+
+        <div class="separador">¿NUEVO EN HUERTO360?</div>
+
+        <div class="registro">
+          ¿Aún no tienes cuenta?
+          <a href="#" id="crearCuenta">Crear una cuenta</a>
+        </div>
+      </div>
+
+      <!-- VISTA: CREAR CUENTA (REGISTRO) -->
+      <div id="vistaRegistro" class="vista-formulario" style="display: none;">
+        <div class="encabezado">
+          <h2>¡Crea tu cuenta!</h2>
+          <p>
+            Únete a la comunidad de Huerto360 y haz crecer tus cosechas y pedidos.
+          </p>
+        </div>
+
+        <form id="registroForm" novalidate>
+
+          <div class="campo campo-registro">
+            <label for="regNombre">Nombre completo</label>
+            <div class="entrada">
+              <span class="icono-campo">👤</span>
+              <input
+                type="text"
+                id="regNombre"
+                name="regNombre"
+                placeholder="Ej. Roberto Gómez"
+                autocomplete="name"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="campo campo-registro">
+            <label for="regRol">¿Cuál es tu rol?</label>
+            <div class="entrada">
+              <span class="icono-campo">🌱</span>
+              <select id="regRol" name="regRol" required>
+                <option value="" disabled selected>Selecciona tu rol en la plataforma</option>
+                <option value="agricultor">🌾 Agricultor (Productor y cosechas)</option>
+                <option value="cliente">🛒 Cliente (Comprador de productos)</option>
+                <option value="jornalero">👨‍🌾 Jornalero (Trabajador del campo)</option>
+                <option value="trasportista">🚚 Transportista (Logística y envíos)</option>
+              </select>
+              <span class="flecha-select">▼</span>
+            </div>
+          </div>
+
+          <div class="campo campo-registro">
+            <label for="regCorreo">Correo electrónico</label>
+            <div class="entrada">
+              <span class="icono-campo">✉</span>
+              <input
+                type="email"
+                id="regCorreo"
+                name="regCorreo"
+                placeholder="tucorreo@ejemplo.com"
+                autocomplete="email"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="campo campo-registro">
+            <label for="regContrasena">Contraseña</label>
+            <div class="entrada">
+              <span class="icono-campo">▣</span>
+              <input
+                type="password"
+                id="regContrasena"
+                name="regContrasena"
+                placeholder="Mínimo 6 caracteres"
+                autocomplete="new-password"
+                required
+              >
+              <button
+                type="button"
+                class="ver-password"
+                id="verPasswordReg"
+              >
+                Ver
+              </button>
+            </div>
+          </div>
+
+          <div class="campo campo-registro">
+            <label for="regConfirmarContrasena">Confirmar contraseña</label>
+            <div class="entrada">
+              <span class="icono-campo">▣</span>
+              <input
+                type="password"
+                id="regConfirmarContrasena"
+                name="regConfirmarContrasena"
+                placeholder="Repite tu contraseña"
+                autocomplete="new-password"
+                required
+              >
+              <button
+                type="button"
+                class="ver-password"
+                id="verPasswordConfirm"
+              >
+                Ver
+              </button>
+            </div>
+          </div>
+
+          <div class="opciones" style="margin-bottom: 18px;">
+            <label class="recordarme">
+              <input type="checkbox" id="regTerminos" checked>
+              Acepto los términos de servicio y privacidad
+            </label>
+          </div>
+
+          <div
+            id="mensajeRegistro"
+            class="mensaje"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <button type="submit" class="boton-login">
+            Crear mi cuenta →
+          </button>
+
+        </form>
+
+        <div class="separador">¿YA TIENES CUENTA?</div>
+
+        <div class="registro">
+          ¿Ya eres parte de Huerto360?
+          <a href="#" id="volverLogin">Iniciar sesión</a>
+        </div>
+      </div>
+
+      <div class="legal">
+        Al continuar, aceptas nuestros términos de servicio
+        y aviso de privacidad.
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // Elementos de vistas
+    const vistaLogin = document.getElementById("vistaLogin");
+    const vistaRegistro = document.getElementById("vistaRegistro");
+    const btnCrearCuenta = document.getElementById("crearCuenta");
+    const btnVolverLogin = document.getElementById("volverLogin");
+
+    // Elementos del formulario de Login
+    const loginForm = document.getElementById("loginForm");
+    const correo = document.getElementById("correo");
+    const contrasena = document.getElementById("contrasena");
+    const mensaje = document.getElementById("mensaje");
+    const verPassword = document.getElementById("verPassword");
+    const recuperar = document.getElementById("recuperar");
+
+    // Elementos del formulario de Registro
+    const registroForm = document.getElementById("registroForm");
+    const regNombre = document.getElementById("regNombre");
+    const regRol = document.getElementById("regRol");
+    const regCorreo = document.getElementById("regCorreo");
+    const regContrasena = document.getElementById("regContrasena");
+    const regConfirmarContrasena = document.getElementById("regConfirmarContrasena");
+    const regTerminos = document.getElementById("regTerminos");
+    const mensajeRegistro = document.getElementById("mensajeRegistro");
+    const verPasswordReg = document.getElementById("verPasswordReg");
+    const verPasswordConfirm = document.getElementById("verPasswordConfirm");
+
+    // Mapa de rutas por rol
+    const rutasRol = {
+      "cliente": "cliente.html",
+      "agricultor": "Agricultor.html",
+      "jornalero": "Jornalero.html",
+      "trasportista": "Trasportista.html"
+    };
+
+    const nombresRol = {
+      "cliente": "Cliente",
+      "agricultor": "Agricultor",
+      "jornalero": "Jornalero",
+      "trasportista": "Transportista"
+    };
+
+    // Funciones de utilidad para mensajes
+    function mostrarMensaje(texto, tipo = "info") {
+      mensaje.textContent = texto;
+      mensaje.className = "mensaje " + tipo;
+    }
+
+    function mostrarMensajeRegistro(texto, tipo = "info") {
+      mensajeRegistro.textContent = texto;
+      mensajeRegistro.className = "mensaje " + tipo;
+    }
+
+    // Funciones para alternar entre Login y Registro
+    function irARegistro() {
+      vistaLogin.style.display = "none";
+      vistaRegistro.style.display = "block";
+      mensaje.className = "mensaje";
+      mensajeRegistro.className = "mensaje";
+      regNombre.focus();
+    }
+
+    function irALogin() {
+      vistaRegistro.style.display = "none";
+      vistaLogin.style.display = "block";
+      mensaje.className = "mensaje";
+      mensajeRegistro.className = "mensaje";
+      correo.focus();
+    }
+
+    btnCrearCuenta.addEventListener("click", function (evento) {
+      evento.preventDefault();
+      irARegistro();
+    });
+
+    btnVolverLogin.addEventListener("click", function (evento) {
+      evento.preventDefault();
+      irALogin();
+    });
+
+    // Toggle de visibilidad de contraseñas
+    verPassword.addEventListener("click", function () {
+      const visible = contrasena.type === "text";
+      contrasena.type = visible ? "password" : "text";
+      verPassword.textContent = visible ? "Ver" : "Ocultar";
+    });
+
+    verPasswordReg.addEventListener("click", function () {
+      const visible = regContrasena.type === "text";
+      regContrasena.type = visible ? "password" : "text";
+      verPasswordReg.textContent = visible ? "Ver" : "Ocultar";
+    });
+
+    verPasswordConfirm.addEventListener("click", function () {
+      const visible = regConfirmarContrasena.type === "text";
+      regConfirmarContrasena.type = visible ? "password" : "text";
+      verPasswordConfirm.textContent = visible ? "Ver" : "Ocultar";
+    });
+
+    // Envía datos en JSON a un PHP y devuelve { ok, json }
+    async function enviar(url, datos) {
+      const respuesta = await fetch(url, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos)
+      });
+
+      let json = {};
+
+      try {
+        json = await respuesta.json();
+      } catch (e) {
+        /* sin JSON */
+      }
+
+      return { ok: respuesta.ok && !json.error, json };
+    }
+
+    // REGISTRO DE CUENTA
+    registroForm.addEventListener("submit", async function (evento) {
+      evento.preventDefault();
+      mensajeRegistro.className = "mensaje";
+
+      const nombreVal = regNombre.value.trim();
+      const rolVal = regRol.value;
+      const correoVal = regCorreo.value.trim().toLowerCase();
+      const passVal = regContrasena.value;
+      const passConfVal = regConfirmarContrasena.value;
+
+      if (!nombreVal || !rolVal || !correoVal || !passVal || !passConfVal) {
+        mostrarMensajeRegistro("Por favor completa todos los campos del registro.", "error");
+        if (!nombreVal) regNombre.focus();
+        else if (!rolVal) regRol.focus();
+        else if (!correoVal) regCorreo.focus();
+        else if (!passVal) regContrasena.focus();
+        else regConfirmarContrasena.focus();
+        return;
+      }
+
+      if (!regCorreo.checkValidity()) {
+        mostrarMensajeRegistro("Ingresa un correo electrónico con formato válido.", "error");
+        regCorreo.focus();
+        return;
+      }
+
+      if (passVal.length < 6) {
+        mostrarMensajeRegistro("La contraseña debe tener un mínimo de 6 caracteres.", "error");
+        regContrasena.focus();
+        return;
+      }
+
+      if (passVal !== passConfVal) {
+        mostrarMensajeRegistro("Las contraseñas no coinciden. Asegúrate de escribirlas iguales.", "error");
+        regConfirmarContrasena.focus();
+        return;
+      }
+
+      if (!regTerminos.checked) {
+        mostrarMensajeRegistro("Debes aceptar los términos de servicio para continuar.", "error");
+        regTerminos.focus();
+        return;
+      }
+
+      const botonRegistro = registroForm.querySelector('[type="submit"], button:not([type])');
+      if (botonRegistro) botonRegistro.disabled = true;
+
+      try {
+        const { ok, json } = await enviar("api/registro.php", {
+          nombre: nombreVal,
+          rol: rolVal,
+          correo: correoVal,
+          contrasena: passVal
+        });
+
+        if (!ok) {
+          mostrarMensajeRegistro(json.error || "No se pudo crear la cuenta. Intenta de nuevo.", "error");
+          if (botonRegistro) botonRegistro.disabled = false;
+          return;
+        }
+
+        const destino = rutasRol[rolVal] || "huerto360.html";
+        const nombreRol = nombresRol[rolVal] || "Usuario";
+
+        mostrarMensajeRegistro(
+          "¡Cuenta creada con éxito! Bienvenido(a), " + nombreVal + " (" + nombreRol + "). Ingresando a tu panel...",
+          "success"
+        );
+
+        setTimeout(function () {
+          window.location.href = destino;
+        }, 1400);
+      } catch (e) {
+        mostrarMensajeRegistro("No se pudo conectar con el servidor. Revisa que XAMPP (Apache y MySQL) esté encendido.", "error");
+        if (botonRegistro) botonRegistro.disabled = false;
+      }
+    });
+
+    // INICIO DE SESIÓN
+    loginForm.addEventListener("submit", async function (evento) {
+      evento.preventDefault();
+      mensaje.className = "mensaje";
+
+      const correoVal = correo.value.trim().toLowerCase();
+      const passVal = contrasena.value;
+
+      if (!correoVal || !passVal) {
+        mostrarMensaje("Completa tu correo electrónico y contraseña para continuar.", "error");
+        if (!correoVal) correo.focus();
+        else contrasena.focus();
+        return;
+      }
+
+      if (!correo.checkValidity()) {
+        mostrarMensaje("Escribe un correo electrónico válido.", "error");
+        correo.focus();
+        return;
+      }
+
+      const botonLogin = loginForm.querySelector('[type="submit"], button:not([type])');
+      if (botonLogin) botonLogin.disabled = true;
+
+      try {
+        const { ok, json } = await enviar("api/login.php", {
+          correo: correoVal,
+          contrasena: passVal
+        });
+
+        if (!ok) {
+          mostrarMensaje(json.error || "No se pudo iniciar sesión. Intenta de nuevo.", "error");
+          if (botonLogin) botonLogin.disabled = false;
+          contrasena.focus();
+          return;
+        }
+
+        mostrarMensaje("¡Bienvenido(a) de nuevo, " + json.usuario.nombre + "! Entrando a tu espacio...", "success");
+
+        const destino = rutasRol[json.usuario.rol] || "huerto360.html";
+        setTimeout(function () {
+          window.location.href = destino;
+        }, 1100);
+      } catch (e) {
+        mostrarMensaje("No se pudo conectar con el servidor. Revisa que XAMPP (Apache y MySQL) esté encendido.", "error");
+        if (botonLogin) botonLogin.disabled = false;
+      }
+    });
+
+    // RECUPERAR CONTRASEÑA
+    recuperar.addEventListener("click", function (evento) {
+      evento.preventDefault();
+
+      const correoVal = correo.value.trim().toLowerCase();
+      if (!correoVal) {
+        mostrarMensaje("Escribe tu correo en el campo de arriba y vuelve a presionar aquí para recuperar tu clave.", "info");
+        correo.focus();
+        return;
+      }
+
+      // Las contraseñas ahora se guardan cifradas, así que ya no se pueden mostrar.
+      mostrarMensaje(
+        "Por seguridad no podemos mostrar tu contraseña. Pide al administrador del sistema que la restablezca.",
+        "info"
+      );
+    });
+
+    // Abrir vista registro si la URL tiene hash #registro
+    if (window.location.hash === "#registro" || window.location.hash === "#crear-cuenta") {
+      irARegistro();
+    }
+  </script>
+
+</body>
+</html>

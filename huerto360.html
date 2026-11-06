@@ -1,0 +1,1264 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>HUERTO360</title>
+
+    <style>
+      :root {
+        font-family: Inter, Arial, sans-serif;
+        color: #173b30;
+        background: #f7f1df;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .app {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      aside {
+        width: 225px;
+        background: #103c2f;
+        color: white;
+        padding: 22px 14px;
+        flex-shrink: 0;
+      }
+
+      .brand {
+        font-size: 22px;
+        font-weight: 800;
+        margin: 0 9px 28px;
+      }
+
+      .brand small {
+        display: block;
+        font-size: 11px;
+        font-weight: 400;
+      }
+
+      .nav {
+        display: block;
+        width: 100%;
+        border: 0;
+        text-align: left;
+        background: transparent;
+        color: #e4f2e8;
+        padding: 12px;
+        border-radius: 9px;
+        cursor: pointer;
+      }
+
+      .nav:hover,
+      .nav.active {
+        background: #ebca69;
+        color: #14392d;
+      }
+
+      main {
+        max-width: 1250px;
+        width: 100%;
+        margin: auto;
+        padding: 25px 32px;
+      }
+
+      header {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select {
+        border: 1px solid #dce6dc;
+        border-radius: 8px;
+        padding: 10px;
+        background: white;
+        max-width: 100%;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .search {
+        width: 310px;
+      }
+
+      .user {
+        font-weight: 700;
+      }
+
+      h1 {
+        font-size: 27px;
+        margin: 4px 0;
+      }
+
+      h2 {
+        font-size: 18px;
+        margin: 0 0 12px;
+      }
+
+      p {
+        color: #62776c;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px #183d2a12;
+        margin-bottom: 18px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+
+      .stat {
+        background: #fff;
+        border-radius: 11px;
+        padding: 16px;
+        box-shadow: 0 3px 14px #183d2a12;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 23px;
+        margin-top: 7px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 8px;
+        background: #167258;
+        color: white;
+        padding: 10px 14px;
+      }
+
+      .btn.secondary {
+        background: #e9f2e9;
+        color: #13523f;
+      }
+
+      .btn.danger {
+        background: #b7433e;
+      }
+
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        margin: 9px 0;
+        flex-wrap: wrap;
+      }
+
+      .bar {
+        height: 8px;
+        background: #e4eee8;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+
+      .bar i {
+        display: block;
+        height: 100%;
+        background: #138063;
+      }
+
+      .muted {
+        font-size: 13px;
+        color: #6a7b70;
+      }
+
+      .form {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 12px 0;
+      }
+
+      .form input,
+      .form select {
+        flex: 1;
+        min-width: 145px;
+      }
+
+      .item {
+        padding: 12px 0;
+        border-bottom: 1px solid #e9eee8;
+      }
+
+      .item:last-child {
+        border: 0;
+      }
+
+      .tag {
+        display: inline-block;
+        border-radius: 7px;
+        background: #fff1d6;
+        color: #715213;
+        padding: 5px 7px;
+        font-size: 12px;
+      }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 7px;
+        text-align: center;
+      }
+
+      .day {
+        border: 0;
+        background: #f2f6f2;
+        border-radius: 7px;
+        padding: 11px 2px;
+        min-height: 39px;
+      }
+
+      .day.has {
+        background: #ceeadd;
+      }
+
+      .day.selected {
+        background: #167258;
+        color: white;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .notice {
+        padding: 12px;
+        background: #fff2d8;
+        border-radius: 9px;
+        margin: 13px 0;
+      }
+
+      label {
+        cursor: pointer;
+      }
+
+      dialog {
+        border: 0;
+        border-radius: 12px;
+        box-shadow: 0 10px 50px #0004;
+        width: min(450px, 90vw);
+      }
+
+      dialog::backdrop {
+        background: #0006;
+      }
+
+      @media (max-width: 760px) {
+        .app {
+          display: block;
+        }
+
+        aside {
+          width: auto;
+          display: flex;
+          overflow: auto;
+          gap: 4px;
+          padding: 10px;
+        }
+
+        .brand {
+          font-size: 15px;
+          margin: 10px;
+          white-space: nowrap;
+        }
+
+        .brand small {
+          display: none;
+        }
+
+        .nav {
+          width: auto;
+          white-space: nowrap;
+        }
+
+        main {
+          padding: 18px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        header {
+          flex-wrap: wrap;
+        }
+
+        .search {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <aside>
+        <div class="brand">
+          🌻 HUERTO360
+          <small>Gestión inteligente</small>
+        </div>
+
+        <nav id="nav"></nav>
+      </aside>
+
+      <main>
+        <header>
+          <input
+            id="search"
+            class="search"
+            placeholder="Buscar en mi huerto..."
+            aria-label="Buscar"
+          />
+
+          <span class="user">👩🏻 Betzy ▾</span>
+        </header>
+
+        <div id="view"></div>
+      </main>
+    </div>
+
+    <dialog id="editDialog">
+      <form id="editForm" method="dialog">
+        <h2>Editar tarea</h2>
+
+        <input
+          id="editText"
+          required
+          maxlength="120"
+          style="width: 100%"
+        />
+
+        <div class="form">
+          <input id="editDate" type="date" required />
+
+          <select id="editPriority">
+            <option value="10">10 min</option>
+            <option value="15">15 min</option>
+            <option value="20">20 min</option>
+            <option value="25">25 min</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <button class="btn secondary" value="cancel">Cancelar</button>
+          <button class="btn" value="save">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="js/huerto360-api.js"></script>
+    <script>
+      const api = (accion, datos) =>
+        apiLlamar("api/huerto360.php", accion, datos);
+
+      const today = () => new Date().toISOString().slice(0, 10);
+
+      let db = { crops: [], zones: [], tasks: [], events: [], stock: [] };
+
+      let page = "Inicio";
+      let selected = today();
+      let query = "";
+      let editing = null;
+
+      const $ = (id) => document.getElementById(id);
+
+      const esc = (s) =>
+        String(s).replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;"
+            })[c]
+        );
+
+      // Envía la acción al servidor y vuelve a pintar con los datos que devuelve la base
+      async function guardar(accion, datos) {
+        try {
+          db = (await api(accion, datos)).datos;
+          render();
+          return true;
+        } catch (error) {
+          alert(error.message);
+          render();
+          return false;
+        }
+      }
+
+      const uid = () => Date.now() + Math.floor(Math.random() * 10000);
+
+      const matches = (s) =>
+        String(s).toLocaleLowerCase().includes(query.toLocaleLowerCase());
+
+      const fmt = (s) =>
+        new Date(s + "T12:00:00").toLocaleDateString("es-MX", {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        });
+
+      function bar(n) {
+        return `
+          <div class="bar">
+            <i style="width:${Math.max(0, Math.min(100, n))}%"></i>
+          </div>
+        `;
+      }
+
+      function crop(c) {
+        return `
+          <div class="item">
+            <div class="row">
+              <b>${esc(c.icon)} ${esc(c.name)}</b>
+              <b>${c.health}%</b>
+            </div>
+
+            ${bar(c.health)}
+
+            <div class="row">
+              <span class="muted">Salud del cultivo</span>
+
+              <button
+                class="btn secondary"
+                data-action="health"
+                data-id="${c.id}"
+              >
+                Actualizar salud
+              </button>
+
+              <button
+                class="btn danger"
+                data-action="deleteCrop"
+                data-id="${c.id}"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      function task(t) {
+        return `
+          <div class="item row">
+            <label>
+              <input
+                type="checkbox"
+                data-action="toggleTask"
+                data-id="${t.id}"
+                ${t.done ? "checked" : ""}
+              >
+
+              <span style="${t.done ? "text-decoration:line-through;color:#888" : ""}">
+                ${esc(t.text)}
+              </span>
+            </label>
+
+            <span class="muted">
+              ${fmt(t.date)} · ${t.minutes} min
+            </span>
+
+            <span>
+              <button
+                class="btn secondary"
+                data-action="editTask"
+                data-id="${t.id}"
+              >
+                Editar
+              </button>
+
+              <button
+                class="btn danger"
+                data-action="deleteTask"
+                data-id="${t.id}"
+              >
+                Eliminar
+              </button>
+            </span>
+          </div>
+        `;
+      }
+
+      function calendar() {
+        let d = new Date(selected + "T12:00:00");
+        let y = d.getFullYear();
+        let m = d.getMonth();
+        let offset = (new Date(y, m, 1).getDay() + 6) % 7;
+        let count = new Date(y, m + 1, 0).getDate();
+        let cells = Array(offset).fill("<span></span>");
+
+        for (let n = 1; n <= count; n++) {
+          let date =
+            `${y}-${String(m + 1).padStart(2, "0")}-${String(n).padStart(2, "0")}`;
+
+          let has =
+            db.events.some((e) => e.date === date) ||
+            db.tasks.some((t) => t.date === date);
+
+          cells.push(`
+            <button
+              class="day ${has ? "has" : ""} ${date === selected ? "selected" : ""}"
+              data-action="day"
+              data-date="${date}"
+            >
+              ${n}
+            </button>
+          `);
+        }
+
+        return `
+          <div class="row">
+            <button
+              class="btn secondary"
+              data-action="month"
+              data-offset="-1"
+            >
+              ‹
+            </button>
+
+            <b>
+              ${d.toLocaleDateString("es-MX", {
+                month: "long",
+                year: "numeric"
+              })}
+            </b>
+
+            <button
+              class="btn secondary"
+              data-action="month"
+              data-offset="1"
+            >
+              ›
+            </button>
+          </div>
+
+          <div class="calendar">
+            ${["L", "M", "M", "J", "V", "S", "D"]
+              .map((x) => `<b>${x}</b>`)
+              .join("")}
+
+            ${cells.join("")}
+          </div>
+        `;
+      }
+
+      function render() {
+        let pages = [
+          "Inicio",
+          "Mis cultivos",
+          "Riego",
+          "Calendario",
+          "Tareas",
+          "Inventario",
+          "Reportes",
+          "Configuración"
+        ];
+
+        $("nav").innerHTML = pages
+          .map(
+            (p, i) => `
+              <button
+                class="nav ${p === page ? "active" : ""}"
+                data-page="${p}"
+              >
+                ${["⌂", "♧", "♧", "▦", "☑", "▤", "▥", "⚙"][i]} ${p}
+              </button>
+            `
+          )
+          .join("");
+
+        let crops = db.crops.filter((c) => matches(c.name));
+        let tasks = db.tasks.filter((t) => matches(t.text));
+        let events = db.events.filter((e) => matches(e.text));
+
+        let average = db.zones.length
+          ? Math.round(
+              db.zones.reduce((a, z) => a + z.humidity, 0) /
+              db.zones.length
+            )
+          : 0;
+
+        let body = "";
+
+        if (page === "Inicio") {
+          body = `
+            <p>PANEL GENERAL</p>
+            <h1>¡Buenos días, Betzy!</h1>
+            <p>Así se encuentra tu huerto hoy</p>
+
+            <div class="stats">
+              <div class="stat">
+                Cultivos activos
+                <strong>${db.crops.length}</strong>
+              </div>
+
+              <div class="stat">
+                Humedad promedio
+                <strong>${average}%</strong>
+              </div>
+
+              <div class="stat">
+                Tareas pendientes
+                <strong>${db.tasks.filter((t) => !t.done).length}</strong>
+              </div>
+
+              <div class="stat">
+                Zonas de riego
+                <strong>${db.zones.length}</strong>
+              </div>
+            </div>
+
+            <div class="grid" style="margin-top:18px">
+              <section class="card">
+                <h2>Estado de los cultivos</h2>
+
+                ${
+                  crops
+                    .map(
+                      (c) => `
+                        <div class="row">
+                          <span>${esc(c.icon)} ${esc(c.name)}</span>
+                          <b>${c.health}%</b>
+                        </div>
+
+                        ${bar(c.health)}
+                      `
+                    )
+                    .join("") || "<p>Sin cultivos.</p>"
+                }
+              </section>
+
+              <section class="card">
+                <h2>Humedad por zona</h2>
+
+                ${db.zones
+                  .map(
+                    (z) => `
+                      <div class="row">
+                        <span>${esc(z.name)}</span>
+                        <b>${z.humidity}%</b>
+                      </div>
+
+                      ${bar(z.humidity)}
+                    `
+                  )
+                  .join("")}
+
+                ${
+                  db.zones.some((z) => z.humidity < 65)
+                    ? '<div class="notice">⚠ Hay zonas con humedad baja.</div>'
+                    : ""
+                }
+              </section>
+
+              <section class="card">
+                <h2>Calendario</h2>
+                ${calendar()}
+              </section>
+
+              <section class="card">
+                <h2>Tareas pendientes</h2>
+
+                ${
+                  tasks
+                    .filter((t) => !t.done)
+                    .slice(0, 5)
+                    .map(task)
+                    .join("") || "<p>Sin tareas pendientes.</p>"
+                }
+              </section>
+            </div>
+          `;
+        }
+
+        if (page === "Mis cultivos") {
+          body = `
+            <p>MIS CULTIVOS</p>
+            <h1>Mis cultivos</h1>
+
+            <div class="grid">
+              <section class="card">
+                <h2>Cultivos registrados</h2>
+
+                ${
+                  crops.map(crop).join("") ||
+                  "<p>No hay coincidencias.</p>"
+                }
+              </section>
+
+              <section class="card">
+                <h2>Agregar nuevo cultivo</h2>
+
+                <form id="cropForm" class="form">
+                  <input
+                    name="name"
+                    placeholder="Nombre del cultivo"
+                    required
+                    maxlength="50"
+                  >
+
+                  <select name="icon">
+                    <option>🌱</option>
+                    <option>🍅</option>
+                    <option>🥬</option>
+                    <option>🥕</option>
+                    <option>🌽</option>
+                  </select>
+
+                  <button class="btn">Agregar</button>
+                </form>
+              </section>
+            </div>
+          `;
+        }
+
+        if (page === "Riego") {
+          body = `
+            <p>RIEGO</p>
+            <h1>Riego</h1>
+            <p>Control de humedad por zona</p>
+
+            <div class="grid">
+              ${db.zones
+                .map(
+                  (z) => `
+                    <section class="card">
+                      <h2>Zona ${z.id} (${esc(z.name)})</h2>
+
+                      <div class="row">
+                        Humedad actual
+                        <b>${z.humidity}%</b>
+                      </div>
+
+                      ${bar(z.humidity)}
+
+                      <div class="row">
+                        <button
+                          class="btn"
+                          data-action="water"
+                          data-id="${z.id}"
+                        >
+                          Regar ahora
+                        </button>
+
+                        <label>
+                          Riego automático
+
+                          <input
+                            type="checkbox"
+                            data-action="auto"
+                            data-id="${z.id}"
+                            ${z.auto ? "checked" : ""}
+                          >
+                        </label>
+                      </div>
+
+                      <p class="muted">
+                        Riego simulado: ajusta la humedad registrada.
+                      </p>
+                    </section>
+                  `
+                )
+                .join("")}
+            </div>
+          `;
+        }
+
+        if (page === "Calendario") {
+          body = `
+            <p>CALENDARIO</p>
+            <h1>Calendario</h1>
+
+            <div class="grid">
+              <section class="card">
+                ${calendar()}
+              </section>
+
+              <section class="card">
+                <h2>Eventos del ${fmt(selected)}</h2>
+
+                ${
+                  events
+                    .filter((e) => e.date === selected)
+                    .map(
+                      (e) => `
+                        <div class="item row">
+                          ${esc(e.text)}
+
+                          <button
+                            class="btn danger"
+                            data-action="deleteEvent"
+                            data-id="${e.id}"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      `
+                    )
+                    .join("") || "<p>No hay eventos.</p>"
+                }
+
+                <h2>Añadir recordatorio</h2>
+
+                <form id="eventForm" class="form">
+                  <input
+                    name="text"
+                    placeholder="Recordatorio"
+                    required
+                    maxlength="120"
+                  >
+
+                  <input
+                    type="date"
+                    name="date"
+                    value="${selected}"
+                    required
+                  >
+
+                  <button class="btn">Añadir</button>
+                </form>
+              </section>
+            </div>
+          `;
+        }
+
+        if (page === "Tareas") {
+          body = `
+            <p>TAREAS</p>
+            <h1>Tareas</h1>
+
+            <div class="card">
+              <h2>Agregar tarea</h2>
+
+              <form id="taskForm" class="form">
+                <input
+                  name="text"
+                  placeholder="Descripción"
+                  required
+                  maxlength="120"
+                >
+
+                <input
+                  type="date"
+                  name="date"
+                  value="${today()}"
+                  required
+                >
+
+                <select name="minutes">
+                  <option>10</option>
+                  <option>15</option>
+                  <option>20</option>
+                  <option>25</option>
+                </select>
+
+                <button class="btn">Agregar</button>
+              </form>
+
+              <h2>Listado de tareas</h2>
+
+              ${
+                tasks
+                  .sort(
+                    (a, b) =>
+                      Number(a.done) - Number(b.done) ||
+                      a.date.localeCompare(b.date)
+                  )
+                  .map(task)
+                  .join("") || "<p>No hay coincidencias.</p>"
+              }
+            </div>
+          `;
+        }
+
+        if (page === "Inventario") {
+          body = `
+            <h1>Inventario</h1>
+
+            <div class="card">
+              <p>Registra insumos y cantidades.</p>
+
+              <form id="stockForm" class="form">
+                <input
+                  name="name"
+                  required
+                  placeholder="Insumo"
+                  maxlength="60"
+                >
+
+                <input
+                  name="quantity"
+                  required
+                  type="number"
+                  min="1"
+                  placeholder="Cantidad"
+                >
+
+                <button class="btn">Agregar</button>
+              </form>
+
+              ${(db.stock || [])
+                .filter((s) => matches(s.name))
+                .map(
+                  (s) => `
+                    <div class="item row">
+                      ${esc(s.name)}: ${s.quantity}
+
+                      <button
+                        class="btn danger"
+                        data-action="deleteStock"
+                        data-id="${s.id}"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          `;
+        }
+
+        if (page === "Reportes") {
+          body = `
+            <h1>Reportes</h1>
+
+            <div class="stats">
+              <div class="stat">
+                Cultivos
+                <strong>${db.crops.length}</strong>
+              </div>
+
+              <div class="stat">
+                Salud media
+
+                <strong>
+                  ${
+                    db.crops.length
+                      ? Math.round(
+                          db.crops.reduce((a, c) => a + c.health, 0) /
+                          db.crops.length
+                        )
+                      : 0
+                  }%
+                </strong>
+              </div>
+
+              <div class="stat">
+                Tareas completadas
+                <strong>${db.tasks.filter((t) => t.done).length}</strong>
+              </div>
+
+              <div class="stat">
+                Humedad media
+                <strong>${average}%</strong>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:18px">
+              <button class="btn" data-action="export">
+                Descargar datos JSON
+              </button>
+            </div>
+          `;
+        }
+
+        if (page === "Configuración") {
+          body = `
+            <h1>Configuración</h1>
+
+            <div class="card">
+              <h2>Datos del huerto</h2>
+
+              <p>
+                Los datos del huerto se guardan en la base de datos del servidor.
+              </p>
+
+              <button class="btn" data-action="export">
+                Exportar copia
+              </button>
+
+              <label class="btn secondary">
+                Importar copia
+
+                <input
+                  id="importFile"
+                  type="file"
+                  accept="application/json"
+                  hidden
+                >
+              </label>
+
+              <button class="btn danger" data-action="reset">
+                Restablecer datos de ejemplo
+              </button>
+            </div>
+          `;
+        }
+
+        $("view").innerHTML = body;
+      }
+
+      document.addEventListener("click", async (e) => {
+        let b = e.target.closest("[data-page],[data-action]");
+
+        if (!b) return;
+
+        if (b.dataset.page) {
+          page = b.dataset.page;
+          query = "";
+          $("search").value = "";
+          render();
+          return;
+        }
+
+        let id = Number(b.dataset.id);
+        let action = b.dataset.action;
+
+        if (action === "day") {
+          selected = b.dataset.date;
+          render();
+          return;
+        }
+
+        if (action === "month") {
+          let d = new Date(selected + "T12:00:00");
+          d.setDate(1);
+          d.setMonth(d.getMonth() + Number(b.dataset.offset));
+
+          selected =
+            `${d.getFullYear()}-` +
+            `${String(d.getMonth() + 1).padStart(2, "0")}-01`;
+
+          render();
+          return;
+        }
+
+        if (action === "water") {
+          await guardar("regar", { id });
+          return;
+        }
+
+        if (action === "health") {
+          let c = db.crops.find((x) => x.id === id);
+          let n = prompt("Salud del cultivo (0 a 100):", c.health);
+
+          if (n === null) return;
+
+          if (
+            n.trim() === "" ||
+            !Number.isInteger(Number(n)) ||
+            Number(n) < 0 ||
+            Number(n) > 100
+          ) {
+            alert("Ingresa un número entero entre 0 y 100.");
+            return;
+          }
+
+          await guardar("salud", { id, health: Number(n) });
+          return;
+        }
+
+        if (action === "editTask") {
+          editing = id;
+
+          let t = db.tasks.find((x) => x.id === id);
+
+          $("editText").value = t.text;
+          $("editDate").value = t.date;
+          $("editPriority").value = t.minutes;
+          $("editDialog").showModal();
+
+          return;
+        }
+
+        if (
+          action === "deleteCrop" ||
+          action === "deleteTask" ||
+          action === "deleteEvent" ||
+          action === "deleteStock"
+        ) {
+          if (!confirm("¿Eliminar este registro?")) return;
+
+          let tabla = {
+            deleteCrop: "cultivo",
+            deleteTask: "tarea",
+            deleteEvent: "evento",
+            deleteStock: "inventario"
+          }[action];
+
+          await guardar("eliminar", { tabla, id });
+          return;
+        }
+
+        if (action === "export") {
+          let blob = new Blob([JSON.stringify(db, null, 2)], {
+            type: "application/json"
+          });
+
+          let url = URL.createObjectURL(blob);
+          let a = document.createElement("a");
+
+          a.href = url;
+          a.download = "huerto360-datos.json";
+          a.click();
+
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+          return;
+        }
+
+        if (action === "reset") {
+          if (!confirm("¿Restablecer todos los datos?")) return;
+
+          await guardar("reiniciar");
+        }
+      });
+
+      document.addEventListener("change", async (e) => {
+        let a = e.target.dataset.action;
+        let id = Number(e.target.dataset.id);
+
+        if (a === "auto") {
+          await guardar("riego_auto", { id, auto: e.target.checked });
+        }
+
+        if (a === "toggleTask") {
+          await guardar("alternar_tarea", { id, done: e.target.checked });
+        }
+
+        if (e.target.id === "importFile") {
+          let f = e.target.files[0];
+
+          if (!f) return;
+
+          f.text()
+            .then((t) => {
+              let v = JSON.parse(t);
+
+              if (
+                !["crops", "zones", "tasks", "events"].every((k) =>
+                  Array.isArray(v[k])
+                )
+              ) {
+                throw Error("Formato no válido");
+              }
+
+              return guardar("importar", { datos: v });
+            })
+            .catch(() => alert("No se pudo importar el archivo JSON."));
+        }
+      });
+
+      document.addEventListener("submit", async (e) => {
+        if (e.target.id === "editForm") {
+          if (e.submitter?.value === "save") {
+            await guardar("editar_tarea", {
+              id: editing,
+              text: $("editText").value.trim(),
+              date: $("editDate").value,
+              minutes: Number($("editPriority").value)
+            });
+          }
+
+          return;
+        }
+
+        let f = e.target;
+
+        if (
+          !["cropForm", "taskForm", "eventForm", "stockForm"].includes(f.id)
+        ) {
+          return;
+        }
+
+        e.preventDefault();
+
+        let v = Object.fromEntries(new FormData(f));
+
+        if (f.id === "cropForm") {
+          await guardar("crear_cultivo", { name: v.name.trim(), icon: v.icon });
+        }
+
+        if (f.id === "taskForm") {
+          await guardar("crear_tarea", {
+            text: v.text.trim(),
+            date: v.date,
+            minutes: Number(v.minutes)
+          });
+        }
+
+        if (f.id === "eventForm") {
+          selected = v.date;
+
+          await guardar("crear_evento", { text: v.text.trim(), date: v.date });
+        }
+
+        if (f.id === "stockForm") {
+          await guardar("crear_inventario", {
+            name: v.name.trim(),
+            quantity: Number(v.quantity)
+          });
+        }
+      });
+
+      $("search").addEventListener("input", (e) => {
+        query = e.target.value;
+        render();
+      });
+
+      agregarBotonSalir();
+
+      (async () => {
+        try {
+          db = (await api("cargar")).datos;
+        } catch (error) {
+          alert(error.message);
+        }
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

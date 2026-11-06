@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HUERTO360 | Agricultor</title>
+
+  <style>
+    :root {
+      font-family: Arial, sans-serif;
+      color: #173c30;
+      background: #f6f2e7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 230px;
+      flex: none;
+      padding: 25px 14px;
+      background: #103c2f;
+      color: white;
+    }
+
+    .logo {
+      margin: 0 10px 28px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .logo small {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .nav {
+      display: block;
+      width: 100%;
+      margin-bottom: 5px;
+      padding: 12px;
+      border: 0;
+      border-radius: 9px;
+      text-align: left;
+      background: none;
+      color: white;
+    }
+
+    .nav.active,
+    .nav:hover {
+      background: #ebca69;
+      color: #173c30;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    header,
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header {
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      margin: 4px 0;
+      font-size: 28px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 19px;
+    }
+
+    p,
+    .muted {
+      color: #667a6d;
+    }
+
+    .eyebrow {
+      color: #238063;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .card,
+    .stat {
+      padding: 20px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #153b2912;
+    }
+
+    .card {
+      margin-bottom: 18px;
+    }
+
+    .stat span {
+      font-size: 13px;
+      color: #65776b;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 9px;
+      font-size: 25px;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: #147357;
+    }
+
+    .btn.alt {
+      background: #e6f2e8;
+      color: #15523d;
+    }
+
+    .btn.red {
+      background: #a84941;
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d6e0d8;
+      border-radius: 8px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .entry {
+      padding: 15px 0;
+      border-bottom: 1px solid #e9eee9;
+    }
+
+    .entry:last-child {
+      border: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #70510e;
+      background: #fff0ce;
+    }
+
+    .badge.done {
+      color: #145b3f;
+      background: #dcefe1;
+    }
+
+    .empty {
+      padding: 15px;
+      border-radius: 8px;
+      background: #f4f7f2;
+    }
+
+    #message {
+      min-height: 24px;
+      color: #147357;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: block;
+      }
+
+      aside {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      .logo {
+        font-size: 16px;
+        white-space: nowrap;
+        margin: 10px 15px 0 4px;
+      }
+
+      .logo small {
+        display: none;
+      }
+
+      .nav {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside>
+      <div class="logo">
+        🌻 HUERTO360
+        <small>Panel del agricultor</small>
+      </div>
+
+      <nav id="menu"></nav>
+    </aside>
+
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">CUIDA Y ORGANIZA TUS CULTIVOS</p>
+          <h1 id="title">Resumen</h1>
+        </div>
+
+        <strong>👨🏽‍🌾 Agricultor</strong>
+      </header>
+
+      <div
+        id="message"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+      <div id="content"></div>
+    </main>
+  </div>
+
+  <script src="js/huerto360-api.js"></script>
+  <script>
+    const api = (accion, datos) =>
+      apiLlamar("api/agricultor.php", accion, datos);
+
+    const today = () => {
+      const d = new Date();
+
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    };
+
+    let db = { plots: [], tasks: [], harvests: [] };
+
+    let page = "Resumen";
+    let editing = null;
+
+    const $ = id => document.getElementById(id);
+
+    const uid = () => crypto.randomUUID();
+
+    const esc = value =>
+      String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[ch]);
+
+    const fmt = date =>
+      new Date(date + "T12:00:00").toLocaleDateString(
+        "es-MX",
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        }
+      );
+
+    const num = value =>
+      Number(value).toLocaleString("es-MX", {
+        maximumFractionDigits: 2
+      });
+
+    const plot = id =>
+      db.plots.find(item => item.id === id);
+
+    const notify = text => {
+      $("message").textContent = text;
+    };
+
+    // Envía la acción al servidor y vuelve a pintar con los datos que devuelve la base
+    async function guardar(accion, datos, message) {
+      try {
+        db = (await api(accion, datos)).datos;
+        render();
+        notify(message);
+        return true;
+      } catch (error) {
+        notify(error.message);
+        return false;
+      }
+    }
+
+    function plotOptions() {
+      return db.plots.map(item => `
+        <option value="${item.id}">
+          ${esc(item.name)} · ${esc(item.crop)}
+        </option>
+      `).join("");
+    }
+
+    function plotCard(item) {
+      return `
+        <article class="entry">
+          <div class="row">
+            <strong>🌱 ${esc(item.name)}</strong>
+
+            <span class="badge">
+              ${esc(item.stage)}
+            </span>
+          </div>
+
+          <p>
+            ${esc(item.crop)} · ${num(item.area)} m²<br>
+            Siembra: ${fmt(item.sowing)}
+          </p>
+
+          <button
+            class="btn alt"
+            data-action="editPlot"
+            data-id="${item.id}"
+          >
+            Editar parcela
+          </button>
+        </article>
+      `;
+    }
+
+    function taskCard(item) {
+      return `
+        <article class="entry">
+          <div class="row">
+            <strong>${esc(item.name)}</strong>
+
+            <span class="badge ${item.done ? "done" : ""}">
+              ${item.done ? "Completada" : "Pendiente"}
+            </span>
+          </div>
+
+          <p>
+            ${esc(plot(item.plotId)?.name || "Parcela")} ·
+            ${fmt(item.date)}
+          </p>
+
+          <div class="actions">
+            <button
+              class="btn alt"
+              data-action="toggleTask"
+              data-id="${item.id}"
+            >
+              ${item.done ? "Reabrir" : "Completar"}
+            </button>
+
+            <button
+              class="btn red"
+              data-action="deleteTask"
+              data-id="${item.id}"
+            >
+              Eliminar
+            </button>
+          </div>
+        </article>
+      `;
+    }
+
+    function render() {
+      const pages = [
+        "Resumen",
+        "Mis parcelas",
+        "Actividades",
+        "Cosechas",
+        "Reportes"
+      ];
+
+      $("menu").innerHTML = pages.map((name, i) => `
+        <button
+          class="nav ${name === page ? "active" : ""}"
+          data-page="${name}"
+        >
+          ${["⌂", "🌱", "☑", "🌽", "▤"][i]} ${name}
+        </button>
+      `).join("");
+
+      $("title").textContent = page;
+
+      const pending = db.tasks.filter(
+        item => !item.done
+      );
+
+      const totalKg = db.harvests.reduce(
+        (sum, item) => sum + item.kg,
+        0
+      );
+
+      let html = "";
+
+      if (page === "Resumen") {
+        html = `
+          <p>
+            Así se encuentra tu huerto hoy,
+            ${fmt(today())}.
+          </p>
+
+          <div class="stats">
+            <div class="stat">
+              <span>Parcelas</span>
+              <strong>${db.plots.length}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Superficie registrada</span>
+
+              <strong>
+                ${num(db.plots.reduce(
+                  (sum, item) => sum + item.area,
+                  0
+                ))} m²
+              </strong>
+            </div>
+
+            <div class="stat">
+              <span>Actividades pendientes</span>
+              <strong>${pending.length}</strong>
+            </div>
+
+            <div class="stat">
+              <span>Cosecha acumulada</span>
+              <strong>${num(totalKg)} kg</strong>
+            </div>
+          </div>
+
+          <div class="grid">
+            <section class="card">
+              <h2>Estado de las parcelas</h2>
+
+              ${
+                db.plots.map(plotCard).join("") ||
+                `<p class="empty">
+                   No hay parcelas registradas.
+                 </p>`
+              }
+            </section>
+
+            <section class="card">
+              <h2>Próximas actividades</h2>
+
+              ${
+                [...pending]
+                  .sort(
+                    (a, b) => a.date.localeCompare(b.date)
+                  )
+                  .slice(0, 4)
+                  .map(taskCard)
+                  .join("") ||
+                `<p class="empty">
+                   No hay actividades pendientes.
+                 </p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (page === "Mis parcelas") {
+        const current = plot(editing);
+
+        html = `
+          <div class="grid">
+            <section class="card">
+              <h2>Parcelas registradas</h2>
+
+              ${
+                db.plots.map(plotCard).join("") ||
+                `<p class="empty">
+                   Registra tu primera parcela.
+                 </p>`
+              }
+            </section>
+
+            <section class="card">
+              <h2>
+                ${current ? "Editar parcela" : "Nueva parcela"}
+              </h2>
+
+              <form id="plotForm">
+                <label for="plotName">
+                  Nombre de la parcela
+                </label>
+
+                <input
+                  id="plotName"
+                  name="name"
+                  maxlength="60"
+                  required
+                  value="${esc(current?.name || "")}"
+                >
+
+                <label for="crop">Cultivo</label>
+
+                <input
+                  id="crop"
+                  name="crop"
+                  maxlength="50"
+                  required
+                  value="${esc(current?.crop || "")}"
+                >
+
+                <label for="area">Superficie (m²)</label>
+
+                <input
+                  id="area"
+                  name="area"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  required
+                  value="${current?.area || ""}"
+                >
+
+                <label for="sowing">
+                  Fecha de siembra
+                </label>
+
+                <input
+                  id="sowing"
+                  name="sowing"
+                  type="date"
+                  max="${today()}"
+                  required
+                  value="${current?.sowing || today()}"
+                >
+
+                <label for="stage">
+                  Etapa del cultivo
+                </label>
+
+                <select id="stage" name="stage">
+                  ${
+                    [
+                      "Siembra",
+                      "Crecimiento",
+                      "Floración",
+                      "Cosecha",
+                      "Finalizado"
+                    ].map(stage => `
+                      <option
+                        ${stage === current?.stage ? "selected" : ""}
+                      >
+                        ${stage}
+                      </option>
+                    `).join("")
+                  }
+                </select>
+
+                <p class="actions">
+                  <button class="btn">
+                    Guardar parcela
+                  </button>
+
+                  ${
+                    current
+                      ? `
+                        <button
+                          type="button"
+                          class="btn alt"
+                          data-action="newPlot"
+                        >
+                          Cancelar edición
+                        </button>
+                      `
+                      : ""
+                  }
+                </p>
+              </form>
+            </section>
+          </div>
+        `;
+      }
+
+      if (page === "Actividades") {
+        html = `
+          <div class="grid">
+            <section class="card">
+              <h2>Programar actividad</h2>
+
+              <form id="taskForm">
+                <label for="taskName">Actividad</label>
+
+                <input
+                  id="taskName"
+                  name="name"
+                  required
+                  maxlength="120"
+                  placeholder="Ej. Revisar riego"
+                >
+
+                <label for="taskPlot">Parcela</label>
+
+                <select
+                  id="taskPlot"
+                  name="plotId"
+                  required
+                >
+                  ${plotOptions()}
+                </select>
+
+                <label for="taskDate">Fecha</label>
+
+                <input
+                  id="taskDate"
+                  name="date"
+                  type="date"
+                  required
+                  value="${today()}"
+                >
+
+                <p>
+                  <button
+                    class="btn"
+                    ${db.plots.length ? "" : "disabled"}
+                  >
+                    Agregar actividad
+                  </button>
+                </p>
+              </form>
+            </section>
+
+            <section class="card">
+              <h2>Listado de actividades</h2>
+
+              ${
+                [...db.tasks]
+                  .sort(
+                    (a, b) =>
+                      Number(a.done) - Number(b.done) ||
+                      a.date.localeCompare(b.date)
+                  )
+                  .map(taskCard)
+                  .join("") ||
+                `<p class="empty">
+                   No hay actividades registradas.
+                 </p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (page === "Cosechas") {
+        html = `
+          <div class="grid">
+            <section class="card">
+              <h2>Registrar cosecha</h2>
+
+              <form id="harvestForm">
+                <label for="harvestPlot">
+                  Parcela y cultivo
+                </label>
+
+                <select
+                  id="harvestPlot"
+                  name="plotId"
+                  required
+                >
+                  ${plotOptions()}
+                </select>
+
+                <label for="kg">Cantidad (kg)</label>
+
+                <input
+                  id="kg"
+                  name="kg"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  required
+                >
+
+                <label for="harvestDate">
+                  Fecha de cosecha
+                </label>
+
+                <input
+                  id="harvestDate"
+                  name="date"
+                  type="date"
+                  max="${today()}"
+                  required
+                  value="${today()}"
+                >
+
+                <label for="notes">Observaciones</label>
+
+                <textarea
+                  id="notes"
+                  name="notes"
+                  maxlength="300"
+                  placeholder="Calidad, lote u observaciones"
+                ></textarea>
+
+                <p>
+                  <button
+                    class="btn"
+                    ${db.plots.length ? "" : "disabled"}
+                  >
+                    Guardar cosecha
+                  </button>
+                </p>
+              </form>
+            </section>
+
+            <section class="card">
+              <h2>Historial de cosechas</h2>
+
+              ${
+                [...db.harvests]
+                  .reverse()
+                  .map(item => `
+                    <article class="entry">
+                      <div class="row">
+                        <strong>${esc(item.crop)}</strong>
+
+                        <span class="badge done">
+                          ${num(item.kg)} kg
+                        </span>
+                      </div>
+
+                      <p>
+                        ${esc(item.plotName)} ·
+                        ${fmt(item.date)}
+                      </p>
+
+                      ${
+                        item.notes
+                          ? `<p class="muted">
+                               ${esc(item.notes)}
+                             </p>`
+                          : ""
+                      }
+                    </article>
+                  `)
+                  .join("") ||
+                `<p class="empty">
+                   Aún no hay cosechas registradas.
+                 </p>`
+              }
+            </section>
+          </div>
+        `;
+      }
+
+      if (page === "Reportes") {
+        const crops = [
+          ...new Set(
+            db.harvests.map(item => item.crop)
+          )
+        ];
+
+        html = `
+          <section class="card">
+            <h2>Producción por cultivo</h2>
+
+            ${
+              crops.map(crop => `
+                <div class="entry row">
+                  <strong>${esc(crop)}</strong>
+
+                  <b>
+                    ${num(
+                      db.harvests
+                        .filter(item => item.crop === crop)
+                        .reduce(
+                          (sum, item) => sum + item.kg,
+                          0
+                        )
+                    )} kg
+                  </b>
+                </div>
+              `).join("") ||
+              `<p class="empty">
+                 Registra cosechas para ver tu producción.
+               </p>`
+            }
+
+            <p>
+              <b>Total acumulado: ${num(totalKg)} kg</b>
+            </p>
+
+            <p>
+              Actividades completadas:
+              ${db.tasks.filter(item => item.done).length}
+              de ${db.tasks.length}
+            </p>
+          </section>
+        `;
+      }
+
+      $("content").innerHTML = html;
+    }
+
+    document.addEventListener("click", event => {
+      const button = event.target.closest(
+        "[data-page], [data-action]"
+      );
+
+      if (!button) return;
+
+      if (button.dataset.page) {
+        page = button.dataset.page;
+        editing = null;
+        notify("");
+        render();
+        return;
+      }
+
+      const action = button.dataset.action;
+
+      if (action === "editPlot") {
+        editing = button.dataset.id;
+        page = "Mis parcelas";
+        render();
+        return;
+      }
+
+      if (action === "newPlot") {
+        editing = null;
+        render();
+        return;
+      }
+
+      const task = db.tasks.find(
+        item => item.id === button.dataset.id
+      );
+
+      if (!task) return;
+
+      if (action === "toggleTask") {
+        guardar(
+          "alternar_tarea",
+          { id: task.id },
+          "Actividad actualizada."
+        );
+      }
+
+      if (action === "deleteTask") {
+        if (!confirm("¿Eliminar esta actividad?")) {
+          return;
+        }
+
+        guardar(
+          "eliminar_tarea",
+          { id: task.id },
+          "Actividad actualizada."
+        );
+      }
+    });
+
+    document.addEventListener("submit", async event => {
+      if (
+        ![
+          "plotForm",
+          "taskForm",
+          "harvestForm"
+        ].includes(event.target.id)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const values = Object.fromEntries(
+        new FormData(event.target)
+      );
+
+      if (event.target.id === "plotForm") {
+        const area = Number(values.area);
+
+        if (
+          !values.name.trim() ||
+          !values.crop.trim() ||
+          !Number.isFinite(area) ||
+          area <= 0 ||
+          !values.sowing ||
+          values.sowing > today()
+        ) {
+          notify("Revisa los datos de la parcela.");
+          return;
+        }
+
+        const current = plot(editing);
+        const previous = editing;
+
+        editing = null;
+
+        const ok = await guardar(
+          "guardar_parcela",
+          {
+            id: current?.id || null,
+            name: values.name.trim(),
+            crop: values.crop.trim(),
+            area,
+            sowing: values.sowing,
+            stage: values.stage
+          },
+          "Registro guardado correctamente."
+        );
+
+        if (!ok) editing = previous;
+        return;
+      }
+
+      if (event.target.id === "taskForm") {
+        if (
+          !values.name.trim() ||
+          !plot(values.plotId) ||
+          !values.date
+        ) {
+          notify(
+            "Completa los datos de la actividad."
+          );
+
+          return;
+        }
+
+        guardar(
+          "guardar_tarea",
+          {
+            name: values.name.trim(),
+            plotId: values.plotId,
+            date: values.date
+          },
+          "Registro guardado correctamente."
+        );
+        return;
+      }
+
+      if (event.target.id === "harvestForm") {
+        const current = plot(values.plotId);
+        const kg = Number(values.kg);
+
+        if (
+          !current ||
+          !Number.isFinite(kg) ||
+          kg <= 0 ||
+          !values.date ||
+          values.date > today() ||
+          values.date < current.sowing
+        ) {
+          notify(
+            "La cantidad debe ser positiva y la fecha debe estar entre la siembra y hoy."
+          );
+
+          return;
+        }
+
+        guardar(
+          "guardar_cosecha",
+          {
+            plotId: current.id,
+            kg,
+            date: values.date,
+            notes: values.notes.trim()
+          },
+          "Registro guardado correctamente."
+        );
+      }
+    });
+
+    agregarBotonSalir();
+
+    (async () => {
+      try {
+        db = (await api("cargar")).datos;
+      } catch (error) {
+        notify(error.message);
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>
