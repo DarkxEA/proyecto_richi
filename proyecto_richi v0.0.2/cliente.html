@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HUERTO360 | Cliente</title>
+
+  <style>
+    :root {
+      font-family: Arial, sans-serif;
+      color: #173c30;
+      background: #f6f2e7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 230px;
+      flex: none;
+      padding: 25px 14px;
+      background: #103c2f;
+      color: white;
+    }
+
+    .logo {
+      margin: 0 10px 28px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .logo small {
+      display: block;
+      font-size: 11px;
+      font-weight: normal;
+    }
+
+    .nav {
+      display: block;
+      width: 100%;
+      margin-bottom: 5px;
+      padding: 12px;
+      border: 0;
+      border-radius: 9px;
+      text-align: left;
+      background: none;
+      color: white;
+    }
+
+    .nav.active,
+    .nav:hover {
+      background: #ebca69;
+      color: #173c30;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    header,
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header {
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      margin: 4px 0;
+      font-size: 28px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 19px;
+    }
+
+    p,
+    .muted {
+      color: #667a6d;
+    }
+
+    .eyebrow {
+      color: #238063;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 20px;
+      margin-bottom: 18px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #153b2912;
+    }
+
+    .produce {
+      display: grid;
+      place-items: center;
+      height: 110px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      background: #edf5e8;
+      font-size: 65px;
+    }
+
+    .price {
+      display: block;
+      margin: 12px 0;
+      font-size: 23px;
+      font-weight: bold;
+      color: #147357;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: white;
+      background: #147357;
+    }
+
+    .btn.alt {
+      background: #e6f2e8;
+      color: #15523d;
+    }
+
+    .btn.red {
+      background: #a84941;
+    }
+
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d6e0d8;
+      border-radius: 8px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .search {
+      max-width: 300px;
+    }
+
+    .quantity {
+      width: 75px;
+    }
+
+    .entry {
+      padding: 15px 0;
+      border-bottom: 1px solid #e9eee9;
+    }
+
+    .entry:last-child {
+      border: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      color: #70510e;
+      background: #fff0ce;
+    }
+
+    .badge.cancelled {
+      color: #913d36;
+      background: #fae3e0;
+    }
+
+    .empty {
+      padding: 15px;
+      border-radius: 8px;
+      background: #f4f7f2;
+    }
+
+    #message {
+      min-height: 24px;
+      color: #147357;
+      margin-bottom: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: block;
+      }
+
+      aside {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      .logo {
+        font-size: 16px;
+        white-space: nowrap;
+        margin: 10px 15px 0 4px;
+      }
+
+      .logo small {
+        display: none;
+      }
+
+      .nav {
+        width: auto;
+        white-space: nowrap;
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .catalog {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 430px) {
+      .catalog {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside>
+      <div class="logo">
+        🌻 HUERTO360
+        <small>Panel del cliente</small>
+      </div>
+
+      <nav id="menu"></nav>
+    </aside>
+
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">DEL HUERTO A TU MESA</p>
+          <h1 id="title">Catálogo</h1>
+        </div>
+
+        <strong id="user">🛍️ Cliente</strong>
+      </header>
+
+      <div
+        id="message"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+      <div id="content"></div>
+    </main>
+  </div>
+
+  <script src="js/huerto360-api.js"></script>
+  <script>
+    const api = (accion, datos) =>
+      apiLlamar("api/cliente.php", accion, datos);
+
+    let db = {
+      profile: { name: "", phone: "", address: "" },
+      products: [],
+      cart: [],
+      orders: []
+    };
+
+    let page = "Catálogo";
+
+    const $ = id => document.getElementById(id);
+
+    const esc = value =>
+      String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[ch]);
+
+    // Los precios se almacenan en centavos:
+    // 2800 equivale a $28.00.
+    const money = cents =>
+      (cents / 100).toLocaleString("es-MX", {
+        style: "currency",
+        currency: "MXN"
+      });
+
+    const dateText = date =>
+      new Date(date).toLocaleString("es-MX", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+    const product = id =>
+      db.products.find(item => item.id === id);
+
+    const total = () =>
+      db.cart.reduce(
+        (sum, item) =>
+          sum + product(item.id).price * item.quantity,
+        0
+      );
+
+    const notify = text => {
+      $("message").textContent = text;
+    };
+
+    // Envía la acción al servidor y vuelve a pintar con los datos que devuelve la base.
+    // "antes" se ejecuta justo antes de pintar (por ejemplo, para cambiar de página).
+    async function guardar(accion, datos, message, antes) {
+      try {
+        db = (await api(accion, datos)).datos;
+
+        if (antes) antes();
+
+        render();
+        notify(message);
+        return true;
+      } catch (error) {
+        notify(error.message);
+        return false;
+      }
+    }
+
+    function catalog(query = "") {
+      return db.products
+        .filter(item =>
+          item.name
+            .toLocaleLowerCase()
+            .includes(query.toLocaleLowerCase())
+        )
+        .map(item => `
+          <article class="card">
+            <div class="produce" aria-hidden="true">
+              ${item.icon}
+            </div>
+
+            <h2>${esc(item.name)}</h2>
+
+            <span class="muted">
+              Disponible: ${item.stock} kg
+            </span>
+
+            <span class="price">
+              ${money(item.price)} / kg
+            </span>
+
+            <button
+              class="btn"
+              data-action="add"
+              data-id="${item.id}"
+              ${item.stock === 0 ? "disabled" : ""}
+            >
+              Agregar 1 kg
+            </button>
+          </article>
+        `)
+        .join("") ||
+        `<p class="empty">
+           No hay productos que coincidan.
+         </p>`;
+    }
+
+    function render() {
+      const pages = [
+        "Catálogo",
+        "Mi carrito",
+        "Mis pedidos",
+        "Mis datos"
+      ];
+
+      const kilos = db.cart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+
+      $("menu").innerHTML = pages
+        .map((name, i) => `
+          <button
+            class="nav ${name === page ? "active" : ""}"
+            data-page="${name}"
+          >
+            ${["🥬", "🛒", "📦", "👤"][i]}
+            ${name}
+            ${name === "Mi carrito" ? ` (${kilos} kg)` : ""}
+          </button>
+        `)
+        .join("");
+
+      $("title").textContent = page;
+
+      $("user").textContent =
+        "🛍️ " + (db.profile.name || "Cliente");
+
+      let html = "";
+
+      if (page === "Catálogo") {
+        html = `
+          <div class="row">
+            <p>Elige productos frescos para tu pedido.</p>
+
+            <input
+              id="search"
+              class="search"
+              placeholder="Buscar producto..."
+              aria-label="Buscar producto"
+            >
+          </div>
+
+          <div id="catalog" class="catalog">
+            ${catalog()}
+          </div>
+        `;
+      }
+
+      if (page === "Mi carrito") {
+        html = db.cart.length
+          ? `
+            <div class="grid">
+              <section class="card">
+                <h2>Productos seleccionados</h2>
+
+                ${db.cart.map(item => {
+                  const p = product(item.id);
+
+                  return `
+                    <div class="entry">
+                      <div class="row">
+                        <strong>
+                          ${p.icon} ${esc(p.name)}
+                        </strong>
+
+                        <b>
+                          ${money(p.price * item.quantity)}
+                        </b>
+                      </div>
+
+                      <p class="muted">
+                        ${money(p.price)} / kg
+                      </p>
+
+                      <div class="actions">
+                        <button
+                          class="btn alt"
+                          data-action="minus"
+                          data-id="${item.id}"
+                          aria-label="Restar un kilo de ${esc(p.name)}"
+                        >
+                          −
+                        </button>
+
+                        <b>${item.quantity} kg</b>
+
+                        <button
+                          class="btn alt"
+                          data-action="add"
+                          data-id="${item.id}"
+                          aria-label="Sumar un kilo de ${esc(p.name)}"
+                        >
+                          +
+                        </button>
+
+                        <button
+                          class="btn red"
+                          data-action="remove"
+                          data-id="${item.id}"
+                        >
+                          Quitar
+                        </button>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+
+                <p class="row">
+                  <strong>Total</strong>
+                  <strong>${money(total())}</strong>
+                </p>
+              </section>
+
+              <section class="card">
+                <h2>Datos de entrega</h2>
+
+                <form id="checkout">
+                  <label for="name">Nombre completo</label>
+
+                  <input
+                    id="name"
+                    name="name"
+                    value="${esc(db.profile.name)}"
+                    required
+                    maxlength="80"
+                  >
+
+                  <label for="phone">
+                    Teléfono (10 dígitos)
+                  </label>
+
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    inputmode="numeric"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    value="${esc(db.profile.phone)}"
+                    required
+                  >
+
+                  <label for="address">
+                    Dirección completa
+                  </label>
+
+                  <textarea
+                    id="address"
+                    name="address"
+                    required
+                    maxlength="300"
+                  >${esc(db.profile.address)}</textarea>
+
+                  <p class="muted">
+                    Pago al recibir. No se realiza ningún
+                    cobro en esta página.
+                  </p>
+
+                  <button class="btn">
+                    Confirmar pedido
+                  </button>
+                </form>
+              </section>
+            </div>
+          `
+          : `
+            <div class="card">
+              <h2>Tu carrito está vacío</h2>
+              <p>Agrega productos desde el catálogo.</p>
+
+              <button class="btn" data-page="Catálogo">
+                Ver catálogo
+              </button>
+            </div>
+          `;
+      }
+
+      if (page === "Mis pedidos") {
+        html = `
+          <div class="card">
+            <h2>Historial de pedidos</h2>
+
+            ${
+              [...db.orders]
+                .reverse()
+                .map(order => `
+                  <article class="entry">
+                    <div class="row">
+                      <strong>
+                        Pedido #${order.number}
+                      </strong>
+
+                      <span
+                        class="badge ${
+                          order.status === "Cancelado"
+                            ? "cancelled"
+                            : ""
+                        }"
+                      >
+                        ${order.status}
+                      </span>
+                    </div>
+
+                    <p class="muted">
+                      ${dateText(order.createdAt)}
+                    </p>
+
+                    ${order.items.map(item => `
+                      <p>
+                        ${esc(item.name)} ·
+                        ${item.quantity} kg ·
+                        ${money(item.price * item.quantity)}
+                      </p>
+                    `).join("")}
+
+                    <p>
+                      <b>Total: ${money(order.total)}</b>
+                    </p>
+
+                    <p>
+                      Entrega:
+                      ${esc(order.customer.address)}
+                    </p>
+
+                    ${
+                      order.status === "Pendiente"
+                        ? `
+                          <button
+                            class="btn red"
+                            data-action="cancel"
+                            data-id="${order.number}"
+                          >
+                            Cancelar pedido
+                          </button>
+                        `
+                        : ""
+                    }
+                  </article>
+                `)
+                .join("") ||
+              `<p class="empty">
+                 Todavía no has realizado pedidos.
+               </p>`
+            }
+          </div>
+        `;
+      }
+
+      if (page === "Mis datos") {
+        html = `
+          <section class="card">
+            <h2>Mi información</h2>
+
+            <form id="profile">
+              <label for="profileName">
+                Nombre completo
+              </label>
+
+              <input
+                id="profileName"
+                name="name"
+                required
+                maxlength="80"
+                value="${esc(db.profile.name)}"
+              >
+
+              <label for="profilePhone">
+                Teléfono (10 dígitos)
+              </label>
+
+              <input
+                id="profilePhone"
+                name="phone"
+                type="tel"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                required
+                value="${esc(db.profile.phone)}"
+              >
+
+              <label for="profileAddress">
+                Dirección completa
+              </label>
+
+              <textarea
+                id="profileAddress"
+                name="address"
+                required
+                maxlength="300"
+              >${esc(db.profile.address)}</textarea>
+
+              <p>
+                <button class="btn">
+                  Guardar datos
+                </button>
+              </p>
+            </form>
+          </section>
+        `;
+      }
+
+      $("content").innerHTML = html;
+    }
+
+    document.addEventListener("click", event => {
+      const button = event.target.closest(
+        "[data-page], [data-action]"
+      );
+
+      if (!button) return;
+
+      if (button.dataset.page) {
+        page = button.dataset.page;
+        notify("");
+        render();
+        return;
+      }
+
+      const action = button.dataset.action;
+      const id = Number(button.dataset.id);
+
+      if (action === "cancel") {
+        const order = db.orders.find(
+          item => item.number === id
+        );
+
+        if (!order || order.status !== "Pendiente") {
+          return;
+        }
+
+        if (!confirm("¿Quieres cancelar este pedido?")) {
+          return;
+        }
+
+        guardar("cancelar", { id }, "Pedido cancelado.");
+        return;
+      }
+
+      const p = product(id);
+
+      if (!p) return;
+
+      const item = db.cart.find(
+        entry => entry.id === id
+      );
+
+      if (action === "add") {
+        if ((item?.quantity || 0) >= p.stock) {
+          notify(
+            "No hay más cantidad disponible de este producto."
+          );
+
+          return;
+        }
+
+        guardar("agregar", { id }, `${p.name} agregado al carrito.`);
+      }
+
+      if (action === "minus" && item) {
+        guardar("restar", { id }, "");
+      }
+
+      if (action === "remove") {
+        guardar("quitar", { id }, "");
+      }
+    });
+
+    document.addEventListener("input", event => {
+      if (event.target.id === "search") {
+        $("catalog").innerHTML = catalog(
+          event.target.value
+        );
+      }
+    });
+
+    document.addEventListener("submit", event => {
+      if (
+        !["checkout", "profile"].includes(event.target.id)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const values = Object.fromEntries(
+        new FormData(event.target)
+      );
+
+      const customer = {
+        name: values.name.trim(),
+        phone: values.phone.trim(),
+        address: values.address.trim()
+      };
+
+      if (
+        !customer.name ||
+        !customer.address ||
+        !/^[0-9]{10}$/.test(customer.phone)
+      ) {
+        notify(
+          "Completa tu nombre, teléfono y dirección."
+        );
+
+        return;
+      }
+
+      if (event.target.id === "checkout") {
+        if (!db.cart.length) return;
+
+        if (
+          db.cart.some(
+            item => item.quantity > product(item.id).stock
+          )
+        ) {
+          notify(
+            "Revisa la disponibilidad de los productos."
+          );
+
+          return;
+        }
+
+        guardar(
+          "pedido",
+          customer,
+          "Pedido registrado. Puedes consultarlo en Mis pedidos.",
+          () => { page = "Mis pedidos"; }
+        );
+
+        return;
+      }
+
+      guardar(
+        "guardar_perfil",
+        customer,
+        "Tus datos fueron guardados."
+      );
+    });
+
+    agregarBotonSalir();
+
+    (async () => {
+      try {
+        db = (await api("cargar")).datos;
+      } catch (error) {
+        notify(error.message);
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>
